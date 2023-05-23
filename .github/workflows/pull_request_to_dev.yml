@@ -1,5 +1,5 @@
 name: Merging to Dev
-run-name: Pull request "${{ github.head_ref }}" to dev by ${{ github.actor }}
+run-name: Pull request "${{ github.ref_name }}" to dev by ${{ github.actor }}
 
 on:
   workflow_call:

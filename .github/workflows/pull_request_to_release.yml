@@ -1,5 +1,5 @@
 name: Creating Pull Request to Release
-run-name: Pull Request "${{ github.head_ref }}" to Release by ${{ github.actor }} 
+run-name: Pull Request "${{ github.ref_name }}" to Release by ${{ github.actor }} 
 
 on:
   workflow_call:
@@ -67,7 +67,7 @@ jobs:
           cd ${GITHUB_REPOSITORY#*/}
 
           # Checkout current branch
-          git checkout ${{ github.head_ref }}
+          git checkout ${{ github.ref_name }}
           
           # Add semantic release setting to pyproject.toml
           # If the current file does not have the setting

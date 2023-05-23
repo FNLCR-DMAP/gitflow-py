@@ -1,5 +1,5 @@
 name: Merging to main
-run-name: ${{ github.actor }} is merging "${{ github.head_ref }}" to main
+run-name: ${{ github.actor }} is merging "${{ github.ref_name }}" to main
 
 on:
   workflow_call:
@@ -95,7 +95,7 @@ jobs:
           
           cd ${GITHUB_REPOSITORY#*/}
 
-          git checkout ${{ github.head_ref }}
+          git checkout ${{ github.ref_name }}
           
           # Setup the versioning setting if not exists
 
