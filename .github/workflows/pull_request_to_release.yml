@@ -132,5 +132,3 @@ jobs:
           echo "$current_wd"
           
           bash $current_wd/gitflow-py/src/run_all_unit_tests.sh "$current_wd"
-
-          

@@ -127,13 +127,13 @@ jobs:
 
           if [ "${{ env.create_on_push }}" = "Yes" ]; then
 
-            bash $current_wd/gitflow-py/Check_on_Commit.sh \
+            bash $current_wd/gitflow-py/src/check_on_push.sh \
               "$current_wd" \
               "${{ env.main_commit_hash }}"
 
           else
 
-            bash $current_wd/gitflow-py/Check_on_Commit.sh \
+            bash $current_wd/gitflow-py/src/check_on_push.sh \
               "$current_wd" \
               "${{ github.event.before }}"
 
