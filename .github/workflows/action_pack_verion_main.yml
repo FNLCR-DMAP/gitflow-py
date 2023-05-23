@@ -32,7 +32,7 @@ jobs:
           # Print information about the current event
           git --version
           echo "Image to use: ${{ inputs.image_to_use }}"
-          echo "Event Branch:  ${{ github.ref_name }}"
+          echo "Event Branch:  ${{ github.head_ref }}"
           echo "Event Name: ${{ github.event_name }}"
           echo "Pull Merged: ${{ github.event.pull_request.merged }}"
           echo "Pull Request Branch:  ${{ github.base_ref }}"
@@ -41,7 +41,7 @@ jobs:
           export pull_branch="${{ github.base_ref }}"
           export pull_merged="${{ github.event.pull_request.merged }}"
           export event_name="${{ github.event_name }}"
-          export event_branch="${{ github.ref_name }}"
+          export event_branch="${{ github.head_ref }}"
           
           # Determin event triggers, in current version
           # We checkt for pull request status and push event.
@@ -102,9 +102,9 @@ jobs:
 
   Pull_Request_to_Release_version_main:
     needs: [Checking_for_Event_Trigger]
-    if: ${{ needs.Checks.outputs.pull_check == 'Yes' && 
-            needs.Checks.outputs.merged_check != 'Yes' && 
-            needs.Checks.outputs.release_match == 'Yes' && 
+    if: ${{ needs.Checking_for_Event_Trigger.outputs.pull_check == 'Yes' && 
+            needs.Checking_for_Event_Trigger.outputs.merged_check != 'Yes' && 
+            needs.Checking_for_Event_Trigger.outputs.release_match == 'Yes' && 
             inputs.test == 'No' }}
     uses: fnlcr-dmap/gitflow-py/.github/workflows/pull_request_to_release.yml@main
     with:
@@ -112,9 +112,9 @@ jobs:
 
   Pull_Request_to_Dev_version_main:
     needs: [Checking_for_Event_Trigger]
-    if: ${{ needs.Checks.outputs.pull_check == 'Yes' && 
-           needs.Checks.outputs.merged_check != 'Yes' && 
-           needs.Checks.outputs.dev_match == 'Yes' && 
+    if: ${{ needs.Checking_for_Event_Trigger.outputs.pull_check == 'Yes' && 
+           needs.Checking_for_Event_Trigger.outputs.merged_check != 'Yes' && 
+           needs.Checking_for_Event_Trigger.outputs.dev_match == 'Yes' && 
            inputs.test == 'No' }}
     uses: fnlcr-dmap/gitflow-py/.github/workflows/pull_request_to_dev.yml@main
     with:
@@ -122,9 +122,9 @@ jobs:
 
   Pull_Request_to_Main_version_main:
     needs: [Checking_for_Event_Trigger]
-    if: ${{ needs.Checks.outputs.pull_check == 'Yes' && 
-            needs.Checks.outputs.merged_check != 'Yes' && 
-            needs.Checks.outputs.main_match == 'Yes' && 
+    if: ${{ needs.Checking_for_Event_Trigger.outputs.pull_check == 'Yes' && 
+            needs.Checking_for_Event_Trigger.outputs.merged_check != 'Yes' && 
+            needs.Checking_for_Event_Trigger.outputs.main_match == 'Yes' && 
             inputs.test == 'No' }}
     uses: fnlcr-dmap/gitflow-py/.github/workflows/pull_request_to_main.yml@main
     with:
@@ -132,9 +132,9 @@ jobs:
 
   Post_Processing_for_Merge_to_Main_version_main:
     needs: [Checking_for_Event_Trigger]
-    if: ${{ needs.Checks.outputs.pull_check == 'Yes' && 
-            needs.Checks.outputs.merged_check == 'Yes' && 
-            needs.Checks.outputs.main_match == 'Yes' && 
+    if: ${{ needs.Checking_for_Event_Trigger.outputs.pull_check == 'Yes' && 
+            needs.Checking_for_Event_Trigger.outputs.merged_check == 'Yes' && 
+            needs.Checking_for_Event_Trigger.outputs.main_match == 'Yes' && 
             inputs.test == 'No' }}
     uses: fnlcr-dmap/gitflow-py/.github/workflows/post_merged_to_main.yml@main
     with:
