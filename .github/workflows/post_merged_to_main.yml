@@ -48,7 +48,7 @@ jobs:
           
           pip install sphinx_rtd_theme
 
-          mamba install python-semantic-release
+          conda install python-semantic-release
 
       - name: Generating Documentations
         id: prepare-push 
