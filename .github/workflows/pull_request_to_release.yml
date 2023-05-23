@@ -113,7 +113,7 @@ jobs:
           echo "Setup git:"
           git config --global --add safe.directory $current_wd
           
-          git clone https://github.com/fnlcr-bids-sdsi/gitflow-py.git
+          git clone https://github.com/fnlcr-dmap/gitflow-py.git
 
           cd gitflow-py
 

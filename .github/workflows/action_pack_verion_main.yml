@@ -91,32 +91,32 @@ jobs:
   Gitflow_Py_Test:
     needs: [Checks]
     if: ${{ inputs.test == 'Yes' }}
-    uses: fnlcr-bids-sdsi/gitflow-py/.github/workflows/test_actions.yml@main
+    uses: fnlcr-dmap/gitflow-py/.github/workflows/test_actions.yml@main
 
   Check_Pushed_Scripts_version_main:
     needs: [Checks]
     if: ${{ github.event_name == 'push' && inputs.test == 'No' }}
-    uses: fnlcr-bids-sdsi/gitflow-py/.github/workflows/check_on_push.yml@main
+    uses: fnlcr-dmap/gitflow-py/.github/workflows/check_on_push.yml@main
     with:
       image_to_use: "${{ inputs.image_to_use }}"
-  
+
   Pull_Request_to_Release_version_main:
     needs: [Checks]
     if: ${{ needs.Checks.outputs.pull_check == 'Yes' && 
             needs.Checks.outputs.merged_check != 'Yes' && 
             needs.Checks.outputs.release_match == 'Yes' && 
             inputs.test == 'No' }}
-    uses: fnlcr-bids-sdsi/gitflow-py/.github/workflows/pull_request_to_release.yml@main
+    uses: fnlcr-dmap/gitflow-py/.github/workflows/pull_request_to_release.yml@main
     with:
       image_to_use: "${{ inputs.image_to_use }}"
-      
+
   Pull_Request_to_Dev_version_main:
     needs: [Checks]
     if: ${{ needs.Checks.outputs.pull_check == 'Yes' && 
            needs.Checks.outputs.merged_check != 'Yes' && 
            needs.Checks.outputs.dev_match == 'Yes' && 
            inputs.test == 'No' }}
-    uses: fnlcr-bids-sdsi/gitflow-py/.github/workflows/pull_request_to_dev.yml@main
+    uses: fnlcr-dmap/gitflow-py/.github/workflows/pull_request_to_dev.yml@main
     with:
       image_to_use: "${{ inputs.image_to_use }}"
 
@@ -126,16 +126,16 @@ jobs:
             needs.Checks.outputs.merged_check != 'Yes' && 
             needs.Checks.outputs.main_match == 'Yes' && 
             inputs.test == 'No' }}
-    uses: fnlcr-bids-sdsi/gitflow-py/.github/workflows/pull_request_to_main.yml@main
+    uses: fnlcr-dmap/gitflow-py/.github/workflows/pull_request_to_main.yml@main
     with:
       image_to_use: "${{ inputs.image_to_use }}"
-      
+
   Post_Processing_for_Merge_to_Main_version_main:
     needs: [Checks]
     if: ${{ needs.Checks.outputs.pull_check == 'Yes' && 
             needs.Checks.outputs.merged_check == 'Yes' && 
             needs.Checks.outputs.main_match == 'Yes' && 
             inputs.test == 'No' }}
-    uses: fnlcr-bids-sdsi/gitflow-py/.github/workflows/post_merged_to_main.yml@main
+    uses: fnlcr-dmap/gitflow-py/.github/workflows/post_merged_to_main.yml@main
     with:
       image_to_use: "${{ inputs.image_to_use }}"
