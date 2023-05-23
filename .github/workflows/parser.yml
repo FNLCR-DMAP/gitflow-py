@@ -27,4 +27,3 @@ jobs:
     with:
       image_to_use: "${{ inputs.image_to_use }}"
       test: "${{ inputs.test }}" 
-~
