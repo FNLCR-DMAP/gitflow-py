@@ -77,7 +77,7 @@ jobs:
           fi
        
       - id: Lint_check
-        name: Use flake8 to check code
+        name: Use flake8 to lint code
         run: |
           export current_wd="/__w/${GITHUB_REPOSITORY#*/}/${GITHUB_REPOSITORY#*/}"
           echo "$current_wd"
@@ -98,13 +98,13 @@ jobs:
 
           if [ "${{ env.create_on_push }}" = "Yes" ]; then
 
-            bash $current_wd/gitflow-py/Lint_on_Commit.sh \
+            bash $current_wd/gitflow-py/src/lint_on_push.sh \
               "$current_wd" \
               "${{ env.main_commit_hash }}"
 
           else
 
-            bash $current_wd/gitflow-py/Lint_on_Commit.sh \
+            bash $current_wd/gitflow-py/src/lint_on_push.sh \
             "$current_wd" \
             "${{ github.event.before }}"
 
@@ -138,9 +138,7 @@ jobs:
               "${{ github.event.before }}"
 
           fi
-          
-    
-          
+
       - name: Undo Push If Not Newly Created (muted)
         if: ${{ failure() }}
         run: |

@@ -52,7 +52,7 @@ jobs:
 
           cd $current_wd
 
-          bash $current_wd/gitflow-R/Lint_All.sh
+          bash $current_wd/gitflow-py/src/lint_all_scripts.sh
  
       
       - id: Build_check
@@ -64,7 +64,7 @@ jobs:
           . /root/miniconda3/etc/profile.d/conda.sh && conda init bash
           conda activate scworkflow
           
-          bash $current_wd/gitflow-R/Check_On_Merge_Main.sh "$current_wd"
+          bash $current_wd/gitflow-py/src/check_on_merge_to_main.sh "$current_wd"
 
       - name: Checking Version 
         run: |

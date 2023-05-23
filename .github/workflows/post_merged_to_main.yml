@@ -124,7 +124,7 @@ jobs:
           fi
 
           # Calling documentation de script
-          bash ../gitflow-py/document_generation.sh
+          bash ../gitflow-py/src/document_generation.sh
           
           git add --all
 

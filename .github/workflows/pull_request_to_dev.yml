@@ -52,7 +52,7 @@ jobs:
 
           cd $current_wd
 
-          bash $current_wd/gitflow-py/lint_all_scripts.sh
+          bash $current_wd/gitflow-py/src/lint_all_scripts.sh
       
       - id: Run_All_Unit_Tests
         name: Run All Unit Tests
@@ -64,4 +64,4 @@ jobs:
           export current_wd="/__w/${GITHUB_REPOSITORY#*/}/${GITHUB_REPOSITORY#*/}"
           echo "$current_wd"
           
-          bash $current_wd/gitflow-py/All_Unit_Tests.sh "$current_wd"
+          bash $current_wd/gitflow-py/src/run_all_unit_tests.sh "$current_wd"
