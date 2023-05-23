@@ -1,0 +1,31 @@
+name: Gitflow-Py Parser
+run-name: Activated by ${{ github.actor }} 
+
+on:
+  workflow_call:
+    inputs:
+    
+      image_to_use:
+        required: false
+        default: ghcr.io/ruiheesi/pyscworkflow:latest
+        type: string
+      
+      verions_to_use:
+        required: false
+        default: main
+        type: string
+        
+      test:
+        required: false
+        default: No
+        type: string
+        
+jobs:
+  Activate_Action_Pack:
+    if: ${{ inputs.verions_to_use == 'main' }}
+    uses: fnlcr-bids-sdsi/gitflow-py/.github/workflows/action_pack_verion_main.yml@main
+    with:
+      image_to_use: "${{ inputs.image_to_use }}"
+      test: "${{ inputs.test }}" 
+
+       
