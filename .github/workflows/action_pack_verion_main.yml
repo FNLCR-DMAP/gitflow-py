@@ -89,19 +89,19 @@ jobs:
           fi
           
   Gitflow_Py_Test:
-    needs: [Checks]
+    needs: [Checking_for_Event_Trigger]
     if: ${{ inputs.test == 'Yes' }}
     uses: fnlcr-dmap/gitflow-py/.github/workflows/test_actions.yml@main
 
   Check_Pushed_Scripts_version_main:
-    needs: [Checks]
+    needs: [Checking_for_Event_Trigger]
     if: ${{ github.event_name == 'push' && inputs.test == 'No' }}
     uses: fnlcr-dmap/gitflow-py/.github/workflows/check_on_push.yml@main
     with:
       image_to_use: "${{ inputs.image_to_use }}"
 
   Pull_Request_to_Release_version_main:
-    needs: [Checks]
+    needs: [Checking_for_Event_Trigger]
     if: ${{ needs.Checks.outputs.pull_check == 'Yes' && 
             needs.Checks.outputs.merged_check != 'Yes' && 
             needs.Checks.outputs.release_match == 'Yes' && 
@@ -111,7 +111,7 @@ jobs:
       image_to_use: "${{ inputs.image_to_use }}"
 
   Pull_Request_to_Dev_version_main:
-    needs: [Checks]
+    needs: [Checking_for_Event_Trigger]
     if: ${{ needs.Checks.outputs.pull_check == 'Yes' && 
            needs.Checks.outputs.merged_check != 'Yes' && 
            needs.Checks.outputs.dev_match == 'Yes' && 
@@ -121,7 +121,7 @@ jobs:
       image_to_use: "${{ inputs.image_to_use }}"
 
   Pull_Request_to_Main_version_main:
-    needs: [Checks]
+    needs: [Checking_for_Event_Trigger]
     if: ${{ needs.Checks.outputs.pull_check == 'Yes' && 
             needs.Checks.outputs.merged_check != 'Yes' && 
             needs.Checks.outputs.main_match == 'Yes' && 
@@ -131,7 +131,7 @@ jobs:
       image_to_use: "${{ inputs.image_to_use }}"
 
   Post_Processing_for_Merge_to_Main_version_main:
-    needs: [Checks]
+    needs: [Checking_for_Event_Trigger]
     if: ${{ needs.Checks.outputs.pull_check == 'Yes' && 
             needs.Checks.outputs.merged_check == 'Yes' && 
             needs.Checks.outputs.main_match == 'Yes' && 
