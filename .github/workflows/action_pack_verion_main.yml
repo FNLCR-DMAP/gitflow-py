@@ -15,7 +15,7 @@ on:
         type: string
 
 jobs: 
-  Checking for Event Trigger:
+  Checking_for_Event_Trigger:
     runs-on: ubuntu-latest
     outputs:
       release_match: ${{ steps.checks.outputs.release_match }}
