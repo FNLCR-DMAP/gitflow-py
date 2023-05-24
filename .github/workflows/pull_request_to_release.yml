@@ -1,16 +1,15 @@
-name: Creating Pull Request to Release
+name: Open Pull Request to Release
 run-name: Pull Request "${{ github.head_ref }}" to Release by ${{ github.actor }} 
 
 on:
   workflow_call:
-    inputs:
-      
+    inputs:      
       image_to_use:
         required: true
         type: string
       
 jobs:
-  Unit_tests:
+  Pull_request_checks:
     runs-on: ubuntu-latest
     container: 
       image: ${{ inputs.image_to_use }}
