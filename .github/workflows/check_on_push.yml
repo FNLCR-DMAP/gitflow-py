@@ -34,7 +34,7 @@ jobs:
           # Activate bash and conda
           bash
           . /root/miniconda3/etc/profile.d/conda.sh && conda init bash
-          conda activate scworkflow
+          conda activate spac
           conda list
 
           export current_wd="/__w/${GITHUB_REPOSITORY#*/}/${GITHUB_REPOSITORY#*/}"
@@ -82,7 +82,7 @@ jobs:
           export current_wd="/__w/${GITHUB_REPOSITORY#*/}/${GITHUB_REPOSITORY#*/}"
           echo "$current_wd"
 
-          python -m pip install flake8
+          # python -m pip install flake8
 
           echo "flake8 version:"
           flake8 --version
@@ -119,7 +119,7 @@ jobs:
 
           bash
           . /root/miniconda3/etc/profile.d/conda.sh && conda init bash
-          conda activate scworkflow
+          conda activate spac
           
           pytest --version
 

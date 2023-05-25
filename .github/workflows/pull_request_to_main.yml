@@ -24,7 +24,7 @@ jobs:
           echo "Checking in ${{ inputs.image_to_use }}"
           bash
           . /root/miniconda3/etc/profile.d/conda.sh && conda init bash
-          conda activate scworkflow
+          conda activate spac
           conda list
 
       - run: echo "Running test in ${{ inputs.image_to_use }}"
@@ -39,9 +39,9 @@ jobs:
           echo "$current_wd"
 
           # Set up flake 8 for linting
-          python -m pip install flake8
+          # python -m pip install flake8
 
-          echo "flake8 version:"
+          # echo "flake8 version:"
           flake8 --version
 
           echo "Setup git:"
@@ -61,7 +61,7 @@ jobs:
           echo "$current_wd"
           bash
           . /root/miniconda3/etc/profile.d/conda.sh && conda init bash
-          conda activate scworkflow
+          conda activate spac
           
           bash $current_wd/gitflow-py/src/check_on_merge_to_main.sh "$current_wd"
 
@@ -69,11 +69,11 @@ jobs:
         run: |
           bash
           . /root/miniconda3/etc/profile.d/conda.sh && conda init bash
-          conda activate scworkflow
+          conda activate spac
 
           # Install semantic-release for versioning
           # The pip installed version does not work
-          conda install -c conda-forge python-semantic-release
+          # conda install -c conda-forge python-semantic-release
 
           export current_wd="/__w/${GITHUB_REPOSITORY#*/}/${GITHUB_REPOSITORY#*/}"
           cd $current_wd

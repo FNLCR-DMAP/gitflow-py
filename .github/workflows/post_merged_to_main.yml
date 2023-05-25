@@ -25,9 +25,8 @@ jobs:
           # Activate bash and conda environment
           bash
           . /root/miniconda3/etc/profile.d/conda.sh && conda init bash
-          conda activate scworkflow
+          conda activate spac
           echo "Checking in ${{ inputs.image_to_use }}"
-          conda activate scworkflow
           conda list
           
       - run: echo "Checking in ${{ inputs.image_to_use }}"
@@ -40,15 +39,15 @@ jobs:
           # Install required pacakges
           bash
           . /root/miniconda3/etc/profile.d/conda.sh && conda init bash
-          conda activate scworkflow
+          conda activate spac
 
-          pip --version
+          # pip --version
 
-          pip install sphinx
+          # pip install sphinx
           
-          pip install sphinx_rtd_theme
+          # pip install sphinx_rtd_theme
 
-          conda install -c conda-forge python-semantic-release
+          # conda install -c conda-forge python-semantic-release
 
       - name: Generating Documentations
         id: prepare-push 
@@ -56,7 +55,7 @@ jobs:
         run: |
           bash
           . /root/miniconda3/etc/profile.d/conda.sh && conda init bash
-          conda activate scworkflow
+          conda activate spac
 
           export current_wd="/__w/${GITHUB_REPOSITORY#*/}/${GITHUB_REPOSITORY#*/}"
           cd $current_wd
