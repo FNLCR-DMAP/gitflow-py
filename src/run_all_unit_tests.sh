@@ -23,28 +23,23 @@ test_records=()
 
 for test_to_run in "${all_test_files[@]}"
 do 
-
-  # Print the current test file being executed
-  echo "\nTesting: $test_to_run"
-  
   echo "====================================================================="
+  echo -e "\nTesting: $test_to_run"
   
-  # Run pytest on the current test file
   pytest $test_to_run
-  
-  echo "====================================================================="
 
   pytest_exit_status=$?
 
-  # Check if pytest passed, and #add test result to test_records array
-
   if [ $pytest_exit_status -eq 0 ]; then
-      echo "\nTest passed\n"
+      echo -e "\nTest passed\n"
       test_records+=("$test_to_run : Passed. ")
   else
-      echo "\nTest failed\n"
+      echo -e "\nTest failed\n"
       test_records+=("$test_to_run : Failed. ")
   fi
+
+  echo "====================================================================="
+
 done
 
 echo "\n\nTseting Finished!"
