@@ -55,7 +55,7 @@ do
 done
 
 # Check if any test has failed
-if printf '%s\n' "${test_records[@]}" | grep -q "Failed\."; then
+if printf '%s\n' "${test_records[@]}" | grep -iE "failed"; then
     echo "At least one test has failed."
     # Exit with a non-zero status code indicating test failure
     exit 1
