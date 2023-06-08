@@ -119,7 +119,7 @@ jobs:
 
           echo "Start updating versions"
           semantic-release version
-          semantic-release changelog
+          semantic-release changelog > CHANGELOG.md
 
           git add pyproject.toml
           git add CHANGELOG.md
