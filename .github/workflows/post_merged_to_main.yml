@@ -113,6 +113,7 @@ jobs:
           # Autmoatic version bumping
           # This will update the toml file
 
+          echo "Start updating versions"
           semantic-release version
           semantic-release changelog
 
@@ -123,12 +124,12 @@ jobs:
           cat commit_log.log
           export nothing_for_commit="$(grep -Po "nothing to commit" commit_log.log)"
 
-          if [ -n "${nothing_for_commit}" ]; then
-            echo "Commit check failed with message: $nothing_for_commit" 
-          else
-            echo "Updating main now."
-            git push -f origin main
-          fi
+          # if [ -n "${nothing_for_commit}" ]; then
+          #   echo "Commit check failed with message: $nothing_for_commit" 
+          # else
+          echo "Updating main now."
+          git push -f origin main
+          # fi
 
           # Calling documentation de script
           bash ../gitflow-py/src/document_generation.sh
