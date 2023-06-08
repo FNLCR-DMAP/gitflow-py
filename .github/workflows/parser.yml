@@ -19,6 +19,10 @@ on:
         required: false
         default: No
         type: string
+
+    secrets:
+      PAT:
+        requred: false
         
 jobs:
   Activate_Action_Pack:
