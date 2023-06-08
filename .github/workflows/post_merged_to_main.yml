@@ -8,6 +8,9 @@ on:
       image_to_use:
         required: true
         type: string
+    secrets:
+      PAT:
+        required: false
       
 jobs:
   Adding_documentation_files_and_publish_page:

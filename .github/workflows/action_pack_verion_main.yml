@@ -13,6 +13,9 @@ on:
         required: false
         default: 'No'
         type: string
+    secrets:
+      PAT:
+        required: false
 
 jobs: 
   Checking_for_Event_Trigger:
@@ -139,3 +142,5 @@ jobs:
     uses: fnlcr-dmap/gitflow-py/.github/workflows/post_merged_to_main.yml@main
     with:
       image_to_use: "${{ inputs.image_to_use }}"
+    secrets:
+      PAT: ${{ secrets.PAT }}
