@@ -122,7 +122,8 @@ jobs:
             git push -f origin main
           fi
 
-          apt-get install build-essential
+          apt update
+          conda install sphinx
 
           # Calling documentation de script
           bash ../gitflow-py/src/document_generation.sh
