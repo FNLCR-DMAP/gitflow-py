@@ -43,12 +43,13 @@ jobs:
 
           # pip --version
 
-          pip install sphinx
+          # pip install sphinx
           
-          pip install sphinx_rtd_theme
+          # pip install sphinx_rtd_theme
 
           # conda install -c conda-forge python-semantic-release
 
+          conda install make
 
       - name: Generating Documentations
         id: prepare-push 
