@@ -16,7 +16,7 @@ jobs:
       image: ${{ inputs.image_to_use }}
       credentials:
          username: ${{ github.actor }}
-         password: ${{ secrets.PAT }}
+         password: ${{secrets.PAT}}
          
     steps:
       - name: Show Computing Environment
@@ -65,7 +65,7 @@ jobs:
           cd $current_wd
           
           # Configure git
-          export MY_GIT_TOKEN=${{ secrets.PAT }}
+          export MY_GIT_TOKEN=${{secrets.PAT}}
           export MY_GIT_USERNAME=${{ github.actor }}
           export MY_GIT_EMAIL=${{ github.event.pusher.email }}
           
