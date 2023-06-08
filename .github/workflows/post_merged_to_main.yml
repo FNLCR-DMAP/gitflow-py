@@ -16,7 +16,7 @@ jobs:
       image: ${{ inputs.image_to_use }}
       credentials:
          username: ${{ github.actor }}
-         password: ${{ secrets.GITHUB_TOKEN }}
+         password: ${{ secrets.PAT }}
          
     steps:
       - name: Show Computing Environment
@@ -32,7 +32,7 @@ jobs:
       - run: echo "Checking in ${{ inputs.image_to_use }}"
       - uses: actions/checkout@v3
         with:
-          token: ${{secrets.GITHUB_TOKEN}}
+          token: ${{secrets.PAT}}
 
       - name: Setting Environment
         run: |
@@ -65,7 +65,7 @@ jobs:
           cd $current_wd
           
           # Configure git
-          export MY_GIT_TOKEN=${{ secrets.GITHUB_TOKEN }}
+          export MY_GIT_TOKEN=${{ secrets.PAT }}
           export MY_GIT_USERNAME=${{ github.actor }}
           export MY_GIT_EMAIL=${{ github.event.pusher.email }}
           
