@@ -113,9 +113,12 @@ jobs:
           # Autmoatic version bumping
           # This will update the toml file
 
-          semantic-release
+          semantic-release version
+          semantic-release changelog
+
           git add pyproject.toml
           git add CHANGELOG.md
+
           echo $(git commit -a -m "docs(version): Automatic Version Bumping") > commit_log.log
           cat commit_log.log
           export nothing_for_commit="$(grep -Po "nothing to commit" commit_log.log)"
