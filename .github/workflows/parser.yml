@@ -22,7 +22,7 @@ on:
 
     secrets:
       PAT:
-        requred: false
+        required: false
         
 jobs:
   Activate_Action_Pack:
