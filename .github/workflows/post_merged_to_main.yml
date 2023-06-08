@@ -43,11 +43,12 @@ jobs:
 
           # pip --version
 
-          # pip install sphinx
+          pip install sphinx
           
-          # pip install sphinx_rtd_theme
+          pip install sphinx_rtd_theme
 
           # conda install -c conda-forge python-semantic-release
+
 
       - name: Generating Documentations
         id: prepare-push 
@@ -121,9 +122,6 @@ jobs:
             echo "Updating main now."
             git push -f origin main
           fi
-
-          apt update
-          conda install sphinx
 
           # Calling documentation de script
           bash ../gitflow-py/src/document_generation.sh
