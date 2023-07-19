@@ -54,35 +54,14 @@ echo "import os" >> source/conf.py
 echo "import sys" >> source/conf.py
 echo "path = os.path.abspath('../../src')" >> source/conf.py
 echo "sys.path.insert(0,path)" >> source/conf.py
-echo "extensions = ['sphinx.ext.napoleon']" >> source/conf.py
+echo "extensions = ['sphinx.ext.napoleon, 'sphinx.ext.autodoc'']" >> source/conf.py
 
 # Adding theme. Currentlu using
 # Read the Docs Sphinx Theme 
 
 sed -i "s/^html_theme = .*/html_theme = \"$theme\"/" source/conf.py
 
-# Enable HTML theme options
-echo "html_theme_options = {" >> source/conf.py
-echo "    'canonical_url': ''," >> source/conf.py
-echo "    'analytics_id': ''," >> source/conf.py
-echo "    'logo_only': False," >> source/conf.py
-echo "    'display_version': True," >> source/conf.py
-echo "    'prev_next_buttons_location': 'bottom'," >> source/conf.py
-echo "    'style_external_links': False," >> source/conf.py
-echo "    'style_nav_header_background': '#2980B9'," >> source/conf.py
-echo "    # Toc options" >> source/conf.py
-echo "    'collapse_navigation': True," >> source/conf.py
-echo "    'sticky_navigation': True," >> source/conf.py
-echo "    'navigation_depth': 3," >> source/conf.py
-echo "    'includehidden': True," >> source/conf.py
-echo "    'titles_only': False" >> source/conf.py
-echo "}" >> source/conf.py
-
 sed -i '/:caption: Contents:/a \\n\tmodules' source/index.rst
-
-echo -e ".. |home| replace:: :fontawesome-solid-home:`\uf015`" >> source/index.rst
-echo -e "\n|home|_ [Return to Home](index.html)\n" >> source/index.rst
-
 
 echo "Updating documentation..."
 sphinx-apidoc -f -o source ../src/spac
