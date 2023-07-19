@@ -104,4 +104,6 @@ for module in $modules; do
   cp -r build/html/$module/* .
 done
 
+cp -r ./build/html/* .
+
 echo "Documentation generation completed."
