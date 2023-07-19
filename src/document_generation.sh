@@ -62,7 +62,7 @@ echo "extensions = ['sphinx.ext.napoleon', 'sphinx.ext.autodoc', 'sphinx.ext.aut
 sed -i "s/^html_theme = .*/html_theme = \"$theme\"/" source/conf.py
 
 # Enable navigation bar
-echo "html_theme_options = {'navigation_depth': 5}" >> source/conf.py
+echo "html_theme_options = {'collapse_navigation': False, 'navigation_depth': 6}" >> source/conf.py
 
 # Set path to logo
 # echo "html_logo = 'path_to_logo.png'" >> source/conf.py
@@ -73,9 +73,26 @@ echo "html_theme_options = {'navigation_depth': 5}" >> source/conf.py
 # Enable table of contents sidebar
 # echo "html_sidebars = {'**': ['index.html', 'sourcelink.html', 'searchbox.html']}" >> source/conf.py
 
-# Add Index page and Module Index page to navigation bar
-echo "html_theme_options = {'navbar_links': [('Index', 'index.html', True), ('Modules', 'modules.html', True)]}" >> source/conf.py
+# Create custom template file for header
+echo "<header class=\"wy-header\">
+  <div class=\"container\">
+    <div class=\"row\">
+      <div class=\"col-md-7\">
+        <h1 class=\"wy-logo\"><a href=\"{{ pathto('index') }}\">{{ project }}</a></h1>
+      </div>
+      <div class=\"col-md-5\">
+        <nav role=\"navigation\" class=\"wy-nav-top\" aria-label=\"top navigation\">
+          <ul class=\"wy-nav-side\">
+            <li class=\"toctree-l1\"><a href=\"{{ pathto('index') }}\">Index</a></li>
+            <li class=\"toctree-l1\"><a href=\"modules.html\">Modules</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>" > source/_templates/header.html
 
+echo "Documentation configuration updated."
 
 ###################### Generalized Method #########################
 echo "Updating documentation..."
