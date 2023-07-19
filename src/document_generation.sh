@@ -73,6 +73,10 @@ echo "html_theme_options = {'navigation_depth': 3}" >> source/conf.py
 # Enable table of contents sidebar
 # echo "html_sidebars = {'**': ['index.html', 'sourcelink.html', 'searchbox.html']}" >> source/conf.py
 
+# Add Index page and Module Index page to navigation bar
+echo "html_theme_options = {'navbar_links': [(\"Index\", \"index.html\", True), (\"SPAC\", \"spac.html\", True)]}" >> source/conf.py
+
+
 
 ###################### Generalized Method #########################
 # echo "Updating documentation..."
