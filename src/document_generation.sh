@@ -61,6 +61,18 @@ echo "extensions = ['sphinx.ext.napoleon', 'sphinx.ext.autodoc', 'sphinx.ext.aut
 
 sed -i "s/^html_theme = .*/html_theme = \"$theme\"/" source/conf.py
 
+# Enable navigation bar
+echo "html_theme_options = {'navigation_depth': 3}" >> source/conf.py
+
+# Set path to logo
+# echo "html_logo = 'path_to_logo.png'" >> source/conf.py
+
+# Set path to favicon
+# echo "html_favicon = 'path_to_favicon.ico'" >> source/conf.py
+
+# Enable table of contents sidebar
+# echo "html_sidebars = {'**': ['index.html', 'sourcelink.html', 'searchbox.html']}" >> source/conf.py
+
 
 ###################### Generalized Method #########################
 # echo "Updating documentation..."
