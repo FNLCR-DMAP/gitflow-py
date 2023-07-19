@@ -54,6 +54,7 @@ echo "import os" >> source/conf.py
 echo "import sys" >> source/conf.py
 echo "path = os.path.abspath('../../src')" >> source/conf.py
 echo "sys.path.insert(0,path)" >> source/conf.py
+echo "extensions = ['sphinx.ext.napoleon']" >> source/conf.py
 
 # Adding theme. Currentlu using
 # Read the Docs Sphinx Theme 
