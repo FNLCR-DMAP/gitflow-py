@@ -62,7 +62,7 @@ echo "extensions = ['sphinx.ext.napoleon', 'sphinx.ext.autodoc', 'sphinx.ext.aut
 sed -i "s/^html_theme = .*/html_theme = \"$theme\"/" source/conf.py
 
 # Enable navigation bar
-echo "html_theme_options = {'navigation_depth': 3}" >> source/conf.py
+echo "html_theme_options = {'navigation_depth': 5}" >> source/conf.py
 
 # Set path to logo
 # echo "html_logo = 'path_to_logo.png'" >> source/conf.py
@@ -78,47 +78,47 @@ echo "html_theme_options = {'navbar_links': [('Index', 'index.html', True), ('Mo
 
 
 ###################### Generalized Method #########################
-# echo "Updating documentation..."
-# sphinx-apidoc -f -o source ../src/spac
+echo "Updating documentation..."
+sphinx-apidoc -f -o source ../src/spac
 
-# echo "Generating html now..."
-# make html
+echo "Generating html now..."
+make html
 
-# cp -r build/html/* .
+cp -r build/html/* .
 ####################################################################
 
 ################### Independent Module Method ######################
 
-echo "Updating documentation..."
-# Generate individual .rst files for each module
-sphinx-apidoc -f -o source --separate ../src/spac
+# echo "Updating documentation..."
+# # Generate individual .rst files for each module
+# sphinx-apidoc -f -o source --separate ../src/spac
 
-echo "Updating index.rst..."
-# Add module links to the index page
-echo "   :caption: Contents:" >> source/index.rst
-echo "" >> source/index.rst
+# echo "Updating index.rst..."
+# # Add module links to the index page
+# echo "   :caption: Contents:" >> source/index.rst
+# echo "" >> source/index.rst
 
-# Generate a list of module names
-modules=$(find source -name "*.rst" -type f | sed -e "s/^source\///" -e "s/\.rst$//")
+# # Generate a list of module names
+# modules=$(find source -name "*.rst" -type f | sed -e "s/^source\///" -e "s/\.rst$//")
 
-for module in $modules; do
-  echo "   $module" >> source/index.rst
-done
+# for module in $modules; do
+#   echo "   $module" >> source/index.rst
+# done
 
-echo "Generating HTML for each module..."
-# Generate HTML for each module
-for module in $modules; do
-  echo "Generating HTML for $module..."
-  make html MOD=$module
-done
+# echo "Generating HTML for each module..."
+# # Generate HTML for each module
+# for module in $modules; do
+#   echo "Generating HTML for $module..."
+#   make html MOD=$module
+# done
 
-echo "Copying generated HTML for each module..."
-# Copy generated HTML for each module
-for module in $modules; do
-  echo "Copying HTML for $module..."
-  cp -r build/html/$module/* .
-done
+# echo "Copying generated HTML for each module..."
+# # Copy generated HTML for each module
+# for module in $modules; do
+#   echo "Copying HTML for $module..."
+#   cp -r build/html/$module/* .
+# done
 
-cp -r ./build/html/* .
+# cp -r ./build/html/* .
 
-echo "Documentation generation completed."
+# echo "Documentation generation completed."
