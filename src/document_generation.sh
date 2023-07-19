@@ -54,19 +54,54 @@ echo "import os" >> source/conf.py
 echo "import sys" >> source/conf.py
 echo "path = os.path.abspath('../../src')" >> source/conf.py
 echo "sys.path.insert(0,path)" >> source/conf.py
-echo "extensions = ['sphinx.ext.napoleon', 'sphinx.ext.autodoc']" >> source/conf.py
+echo "extensions = ['sphinx.ext.napoleon', 'sphinx.ext.autodoc', 'sphinx.ext.autosectionlabel']" >> source/conf.py
 
 # Adding theme. Currentlu using
 # Read the Docs Sphinx Theme 
 
 sed -i "s/^html_theme = .*/html_theme = \"$theme\"/" source/conf.py
 
-sed -i '/:caption: Contents:/a \\n\tmodules' source/index.rst
+
+###################### Generalized Method #########################
+# echo "Updating documentation..."
+# sphinx-apidoc -f -o source ../src/spac
+
+# echo "Generating html now..."
+# make html
+
+# cp -r build/html/* .
+####################################################################
+
+################### Independent Module Method ######################
 
 echo "Updating documentation..."
-sphinx-apidoc -f -o source ../src/spac
+# Generate individual .rst files for each module
+sphinx-apidoc -f -o source --separate ../src/spac
 
-echo "Generating html now..."
-make html
+echo "Updating index.rst..."
+# Add module links to the index page
+echo "   :caption: Contents:" >> source/index.rst
+echo "" >> source/index.rst
 
-cp -r build/html/* .
+# Generate a list of module names
+modules=$(find source -name "*.rst" -type f | sed -e "s/^source\///" -e "s/\.rst$//")
+
+for module in $modules; do
+  echo "   $module" >> source/index.rst
+done
+
+echo "Generating HTML for each module..."
+# Generate HTML for each module
+for module in $modules; do
+  echo "Generating HTML for $module..."
+  make html MOD=$module
+done
+
+echo "Copying generated HTML for each module..."
+# Copy generated HTML for each module
+for module in $modules; do
+  echo "Copying HTML for $module..."
+  cp -r build/html/$module/* .
+done
+
+echo "Documentation generation completed."
