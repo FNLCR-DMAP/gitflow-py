@@ -99,13 +99,16 @@ echo "   :caption: Contents:" >> source/index.rst
 echo "" >> source/index.rst
 
 # Add links to the Index page and SPAC page in the toctree directive
-sed -i "/:caption: Contents:/a \ \n$(sed -e 's/\\/\\\\/g; s/\//\\\//g; s/&/\\\&/g' <<< "$modules" | sed -e 's/$/\\/')" source/index.rst
+# sed -i "/:caption: Contents:/a \ \n$(sed -e 's/\\/\\\\/g; s/\//\\\//g; s/&/\\\&/g' <<< "$modules" | sed -e 's/$/\\/')" source/index.rst
 
 # Generate a list of module names
 
 for module in $modules; do
   echo "   $module" >> source/index.rst
 done
+
+# Change the maxdepth to 4 in the toctree directive
+sed -i 's/:maxdepth: 2/:maxdepth: 4/' source/index.rst
 
 echo "Generating HTML for each module..."
 # Generate HTML for each module
