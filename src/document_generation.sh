@@ -73,69 +73,54 @@ echo "html_theme_options = {'collapse_navigation': False, 'navigation_depth': 6}
 # Enable table of contents sidebar
 # echo "html_sidebars = {'**': ['index.html', 'sourcelink.html', 'searchbox.html']}" >> source/conf.py
 
-# Create custom template file for header
-echo "<header class=\"wy-header\">
-  <div class=\"container\">
-    <div class=\"row\">
-      <div class=\"col-md-7\">
-        <h1 class=\"wy-logo\"><a href=\"{{ pathto('index') }}\">{{ project }}</a></h1>
-      </div>
-      <div class=\"col-md-5\">
-        <nav role=\"navigation\" class=\"wy-nav-top\" aria-label=\"top navigation\">
-          <ul class=\"wy-nav-side\">
-            <li class=\"toctree-l1\"><a href=\"{{ pathto('index') }}\">Index</a></li>
-            <li class=\"toctree-l1\"><a href=\"modules.html\">Modules</a></li>
-          </ul>
-        </nav>
-      </div>
-    </div>
-  </div>
-</header>" > source/_templates/header.html
-
-echo "Documentation configuration updated."
 
 ###################### Generalized Method #########################
-echo "Updating documentation..."
-sphinx-apidoc -f -o source ../src/spac
+# echo "Updating documentation..."
+# sphinx-apidoc -f -o source ../src/spac
 
-echo "Generating html now..."
-make html
+# echo "Generating html now..."
+# make html
 
-cp -r build/html/* .
+# cp -r build/html/* .
 ####################################################################
 
 ################### Independent Module Method ######################
 
-# echo "Updating documentation..."
-# # Generate individual .rst files for each module
-# sphinx-apidoc -f -o source --separate ../src/spac
+echo "Updating documentation..."
+# Generate individual .rst files for each module
+sphinx-apidoc -f -o source --separate ../src/spac
 
-# echo "Updating index.rst..."
-# # Add module links to the index page
-# echo "   :caption: Contents:" >> source/index.rst
-# echo "" >> source/index.rst
+echo "Updating index.rst..."
 
-# # Generate a list of module names
-# modules=$(find source -name "*.rst" -type f | sed -e "s/^source\///" -e "s/\.rst$//")
+modules=$(find source -name "*.rst" -type f | sed -e "s/^source\///" -e "s/\.rst$//")
 
-# for module in $modules; do
-#   echo "   $module" >> source/index.rst
-# done
+# Add module links to the index page
+echo "   :caption: Contents:" >> source/index.rst
+echo "" >> source/index.rst
 
-# echo "Generating HTML for each module..."
-# # Generate HTML for each module
-# for module in $modules; do
-#   echo "Generating HTML for $module..."
-#   make html MOD=$module
-# done
+# Add links to the Index page and SPAC page in the toctree directive
+sed -i "/:caption: Contents:/a \ \n$(sed -e 's/\\/\\\\/g; s/\//\\\//g; s/&/\\\&/g' <<< "$modules" | sed -e 's/$/\\/')" source/index.rst
 
-# echo "Copying generated HTML for each module..."
-# # Copy generated HTML for each module
-# for module in $modules; do
-#   echo "Copying HTML for $module..."
-#   cp -r build/html/$module/* .
-# done
+# Generate a list of module names
 
-# cp -r ./build/html/* .
+for module in $modules; do
+  echo "   $module" >> source/index.rst
+done
 
-# echo "Documentation generation completed."
+echo "Generating HTML for each module..."
+# Generate HTML for each module
+for module in $modules; do
+  echo "Generating HTML for $module..."
+  make html MOD=$module
+done
+
+echo "Copying generated HTML for each module..."
+# Copy generated HTML for each module
+for module in $modules; do
+  echo "Copying HTML for $module..."
+  cp -r build/html/$module/* .
+done
+
+cp -r ./build/html/* .
+
+echo "Documentation generation completed."
