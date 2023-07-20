@@ -75,55 +75,56 @@ echo "html_theme_options = {'collapse_navigation': False, 'navigation_depth': 6}
 
 
 ###################### Generalized Method #########################
-# echo "Updating documentation..."
-# sphinx-apidoc -f -o source ../src/spac
+echo "Updating documentation..."
+sphinx-apidoc -f -o source ../src/spac
 
-# echo "Generating html now..."
-# make html
+sed -i 's/:maxdepth: 2/:maxdepth: 4/' source/index.rst
 
-# cp -r build/html/* .
-####################################################################
+echo "Generating html now..."
+make html
+
+cp -r build/html/* .
+###################################################################
 
 ################### Independent Module Method ######################
 
-echo "Updating documentation..."
-# Generate individual .rst files for each module
-sphinx-apidoc -f -o source --separate ../src/spac
+# echo "Updating documentation..."
+# # Generate individual .rst files for each module
+# sphinx-apidoc -f -o source --separate ../src/spac
 
-echo "Updating index.rst..."
+# echo "Updating index.rst..."
 
-modules=$(find source -name "*.rst" -type f | sed -e "s/^source\///" -e "s/\.rst$//")
+# modules=$(find source -name "*.rst" -type f | sed -e "s/^source\///" -e "s/\.rst$//")
 
-# Add module links to the index page
-echo "   :caption: Contents:" >> source/index.rst
-echo "" >> source/index.rst
+# # Add module links to the index page
+# echo "   :caption: Contents:" >> source/index.rst
+# echo "" >> source/index.rst
 
-# Add links to the Index page and SPAC page in the toctree directive
-# sed -i "/:caption: Contents:/a \ \n$(sed -e 's/\\/\\\\/g; s/\//\\\//g; s/&/\\\&/g' <<< "$modules" | sed -e 's/$/\\/')" source/index.rst
+# # Add links to the Index page and SPAC page in the toctree directive
 
-# Generate a list of module names
+# # Generate a list of module names
 
-for module in $modules; do
-  echo "   $module" >> source/index.rst
-done
+# for module in $modules; do
+#   echo "   $module" >> source/index.rst
+# done
 
-# Change the maxdepth to 4 in the toctree directive
-sed -i 's/:maxdepth: 2/:maxdepth: 4/' source/index.rst
+# # Change the maxdepth to 4 in the toctree directive
+# sed -i 's/:maxdepth: 2/:maxdepth: 4/' source/index.rst
 
-echo "Generating HTML for each module..."
-# Generate HTML for each module
-for module in $modules; do
-  echo "Generating HTML for $module..."
-  make html MOD=$module
-done
+# echo "Generating HTML for each module..."
+# # Generate HTML for each module
+# for module in $modules; do
+#   echo "Generating HTML for $module..."
+#   make html MOD=$module
+# done
 
-echo "Copying generated HTML for each module..."
-# Copy generated HTML for each module
-for module in $modules; do
-  echo "Copying HTML for $module..."
-  cp -r build/html/$module/* .
-done
+# echo "Copying generated HTML for each module..."
+# # Copy generated HTML for each module
+# for module in $modules; do
+#   echo "Copying HTML for $module..."
+#   cp -r build/html/$module/* .
+# done
 
-cp -r ./build/html/* .
+# cp -r ./build/html/* .
 
-echo "Documentation generation completed."
+# echo "Documentation generation completed."
