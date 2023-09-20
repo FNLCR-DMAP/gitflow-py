@@ -27,7 +27,7 @@ on:
 jobs:
   Activate_Action_Pack:
     if: ${{ inputs.verions_to_use == 'main' }}
-    uses: fnlcr-dmap/gitflow-py/.github/workflows/action_pack_verion_main.yml@main
+    uses: fnlcr-dmap/gitflow-py/.github/workflows/action_pack_verion_main.yml@omero
     with:
       image_to_use: "${{ inputs.image_to_use }}"
       test: "${{ inputs.test }}" 

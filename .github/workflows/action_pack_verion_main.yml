@@ -94,12 +94,12 @@ jobs:
   Gitflow_Py_Test:
     needs: [Checking_for_Event_Trigger]
     if: ${{ inputs.test == 'Yes' }}
-    uses: fnlcr-dmap/gitflow-py/.github/workflows/test_actions.yml@main
+    uses: fnlcr-dmap/gitflow-py/.github/workflows/test_actions.yml@omero
 
   Check_Pushed_Scripts_version_main:
     needs: [Checking_for_Event_Trigger]
     if: ${{ github.event_name == 'push' && inputs.test == 'No' }}
-    uses: fnlcr-dmap/gitflow-py/.github/workflows/check_on_push.yml@main
+    uses: fnlcr-dmap/gitflow-py/.github/workflows/check_on_push.yml@omero
     with:
       image_to_use: "${{ inputs.image_to_use }}"
 
@@ -109,7 +109,7 @@ jobs:
             needs.Checking_for_Event_Trigger.outputs.merged_check != 'Yes' && 
             needs.Checking_for_Event_Trigger.outputs.release_match == 'Yes' && 
             inputs.test == 'No' }}
-    uses: fnlcr-dmap/gitflow-py/.github/workflows/pull_request_to_release.yml@main
+    uses: fnlcr-dmap/gitflow-py/.github/workflows/pull_request_to_release.yml@omero
     with:
       image_to_use: "${{ inputs.image_to_use }}"
 
@@ -119,7 +119,7 @@ jobs:
            needs.Checking_for_Event_Trigger.outputs.merged_check != 'Yes' && 
            needs.Checking_for_Event_Trigger.outputs.dev_match == 'Yes' && 
            inputs.test == 'No' }}
-    uses: fnlcr-dmap/gitflow-py/.github/workflows/pull_request_to_dev.yml@main
+    uses: fnlcr-dmap/gitflow-py/.github/workflows/pull_request_to_dev.yml@omero
     with:
       image_to_use: "${{ inputs.image_to_use }}"
 
@@ -129,7 +129,7 @@ jobs:
             needs.Checking_for_Event_Trigger.outputs.merged_check != 'Yes' && 
             needs.Checking_for_Event_Trigger.outputs.main_match == 'Yes' && 
             inputs.test == 'No' }}
-    uses: fnlcr-dmap/gitflow-py/.github/workflows/pull_request_to_main.yml@main
+    uses: fnlcr-dmap/gitflow-py/.github/workflows/pull_request_to_main.yml@omero
     with:
       image_to_use: "${{ inputs.image_to_use }}"
 
@@ -139,7 +139,7 @@ jobs:
             needs.Checking_for_Event_Trigger.outputs.merged_check == 'Yes' && 
             needs.Checking_for_Event_Trigger.outputs.main_match == 'Yes' && 
             inputs.test == 'No' }}
-    uses: fnlcr-dmap/gitflow-py/.github/workflows/post_merged_to_main.yml@main
+    uses: fnlcr-dmap/gitflow-py/.github/workflows/post_merged_to_main.yml@omero
     with:
       image_to_use: "${{ inputs.image_to_use }}"
     secrets:

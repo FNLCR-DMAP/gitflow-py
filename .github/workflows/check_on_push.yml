@@ -33,9 +33,9 @@ jobs:
 
           # Activate bash and conda
           bash
-          . /root/miniconda3/etc/profile.d/conda.sh && conda init bash
-          conda activate spac
-          conda list
+          # . /root/miniconda3/etc/profile.d/conda.sh && conda init bash
+          # conda activate spac
+          # conda list
 
           export current_wd="/__w/${GITHUB_REPOSITORY#*/}/${GITHUB_REPOSITORY#*/}"
           echo "$current_wd"
@@ -84,7 +84,7 @@ jobs:
           export current_wd="/__w/${GITHUB_REPOSITORY#*/}/${GITHUB_REPOSITORY#*/}"
           echo "$current_wd"
 
-          # python -m pip install flake8
+          python -m pip install flake8
 
           echo "flake8 version:"
           flake8 --version
@@ -93,7 +93,11 @@ jobs:
           git config --global --add safe.directory $current_wd
           
           git clone https://github.com/fnlcr-dmap/gitflow-py.git
+
+          cd gitflow-py
           
+          git checkout omero
+
           cd $current_wd
 
           # Run lint script with commit information
@@ -119,9 +123,11 @@ jobs:
           export current_wd="/__w/${GITHUB_REPOSITORY#*/}/${GITHUB_REPOSITORY#*/}"
           echo "$current_wd"
 
-          bash
-          . /root/miniconda3/etc/profile.d/conda.sh && conda init bash
-          conda activate spac
+          # bash
+          # . /root/miniconda3/etc/profile.d/conda.sh && conda init bash
+          # conda activate spac
+
+          pip install -y pytest
           
           pytest --version
 

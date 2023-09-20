@@ -23,10 +23,10 @@ jobs:
         run: |
           # Activating bash
           bash
-          echo "Checking in ${{ inputs.image_to_use }}"
-          . /root/miniconda3/etc/profile.d/conda.sh && conda init bash
-          conda activate spac
-          conda list
+          # echo "Checking in ${{ inputs.image_to_use }}"
+          # . /root/miniconda3/etc/profile.d/conda.sh && conda init bash
+          # conda activate spac
+          # conda list
 
       - run: echo "Checking in ${{ inputs.image_to_use }}"
       - uses: actions/checkout@v3
@@ -39,7 +39,7 @@ jobs:
           export current_wd="/__w/${GITHUB_REPOSITORY#*/}/${GITHUB_REPOSITORY#*/}"
           echo "$current_wd"
 
-          # python -m pip install flake8
+          python -m pip install flake8
 
           # echo "flake8 version:"
           flake8 --version
@@ -49,6 +49,10 @@ jobs:
           
           git clone https://github.com/fnlcr-dmap/gitflow-py.git
 
+          cd gitflow-py
+          
+          git checkout omero
+
           cd $current_wd
 
           bash $current_wd/gitflow-py/src/lint_all_scripts.sh
@@ -57,8 +61,8 @@ jobs:
         name: Run All Unit Tests
         run: |
           bash
-          . /root/miniconda3/etc/profile.d/conda.sh && conda init bash
-          conda activate spac
+          # . /root/miniconda3/etc/profile.d/conda.sh && conda init bash
+          # conda activate spac
 
           export current_wd="/__w/${GITHUB_REPOSITORY#*/}/${GITHUB_REPOSITORY#*/}"
           echo "$current_wd"
