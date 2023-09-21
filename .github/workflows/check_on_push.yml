@@ -127,7 +127,7 @@ jobs:
           # . /root/miniconda3/etc/profile.d/conda.sh && conda init bash
           # conda activate spac
 
-          pip install -y pytest
+          pip install pytest
           
           pytest --version
 
