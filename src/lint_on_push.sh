@@ -17,11 +17,11 @@ test_scripts=($(git diff "$last_commit" HEAD --name-only $current_branch | \
 echo -e "Test script changed: \n${test_scripts[*]}\n"
 
 function_scripts=($(git diff "$last_commit" HEAD --name-only $current_branch | \
-                grep -E 'src/spac/'))
+                grep -E 'src/pyoseg/'))
 
 echo -e "Function script changed: \n${function_scripts[*]}\n"
 
-current_python_scripts_paths=($(find tests/ src/spac/ -type f -name "*.py" | grep -v "__init__.py"))
+current_python_scripts_paths=($(find tests/ src/pyoseg/ -type f -name "*.py" | grep -v "__init__.py"))
 
 Lint_list=( "${test_scripts[@]}" "${function_scripts[@]}" )
 
