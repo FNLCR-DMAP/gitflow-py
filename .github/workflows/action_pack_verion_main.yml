@@ -113,15 +113,6 @@ jobs:
     with:
       image_to_use: "${{ inputs.image_to_use }}"
 
-  Push_to_Main_version_main:
-    needs: [Checking_for_Event_Trigger]
-    if: ${{ github.event_name == 'push' &&
-            needs.Checking_for_Event_Trigger.outputs.main_match == 'Yes' && 
-            inputs.test == 'No' }}
-    uses: fnlcr-dmap/gitflow-py/.github/workflows/pull_request_to_release.yml@omero
-    with:
-      image_to_use: "${{ inputs.image_to_use }}"
-
   Pull_Request_to_Dev_version_main:
     needs: [Checking_for_Event_Trigger]
     if: ${{ needs.Checking_for_Event_Trigger.outputs.pull_check == 'Yes' && 
