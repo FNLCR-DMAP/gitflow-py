@@ -68,7 +68,7 @@ jobs:
           cd $current_wd
           
           # Configure git
-          export MY_GIT_TOKEN=${{ secrets.PAT }}
+          export MY_GIT_TOKEN=${{ secrets.GITHUB_TOKEN }}
           export MY_GIT_USERNAME=${{ github.actor }}
           export MY_GIT_EMAIL=${{ github.event.pusher.email }}
           
