@@ -8,30 +8,28 @@ theme="sphinx_rtd_theme"
 # to setup the project, and generate html files
 # for GitHub page.
 
-echo "Parsing pyproject.toml..."
-raw_author_array=()
-counter=0
-while IFS= read -r line && [ $counter -lt 8 ]; do
-  raw_author_array+=("$line")
-  ((counter++))
-done < ../pyproject.toml
+echo "Parsing setup.py..."
+# raw_author_array=()
+# counter=0
+# while IFS= read -r line && [ $counter -lt 8 ]; do
+#   raw_author_array+=("$line")
+#   ((counter++))
+# done < ../pyproject.toml
+setup_file="setup.py"
 
-name=$(echo "${raw_author_array[1]}" | cut -d '=' -f 2)
-name=${name//\"/}
-name=${name//, /,}
-echo $name
+# Extract the version field
+version=$(grep -oP "version=['\"]\K[^'\"]+" "$setup_file")
 
-version=$(echo "${raw_author_array[2]}" | cut -d '=' -f 2)
-version=${version//\"/}
-version=${version//, /,}
-echo $version
+# Extract the package name field
+name=$(grep -oP "name=['\"]\K[^'\"]+" "$setup_file")
 
-authors=$(echo "${raw_author_array[4]}" | cut -d '=' -f 2)
-authors=$(echo "$authors" | sed 's/^ \+\[//')
-authors=${authors%\]}
-authors=${authors//\"/}
-authors=$(echo "$authors")
-echo $authors
+# Extract the author field
+authors=$(grep -oP "author=['\"]\K[^'\"]+" "$setup_file")
+
+# Print the extracted values
+echo "Package Name: $name"
+echo "Version: $version"
+echo "AUthors: $authors"
 
 echo "Running Quickstart..."
 
@@ -85,46 +83,3 @@ make html
 
 cp -r build/html/* .
 ###################################################################
-
-################### Independent Module Method ######################
-
-# echo "Updating documentation..."
-# # Generate individual .rst files for each module
-# sphinx-apidoc -f -o source --separate ../src/spac
-
-# echo "Updating index.rst..."
-
-# modules=$(find source -name "*.rst" -type f | sed -e "s/^source\///" -e "s/\.rst$//")
-
-# # Add module links to the index page
-# echo "   :caption: Contents:" >> source/index.rst
-# echo "" >> source/index.rst
-
-# # Add links to the Index page and SPAC page in the toctree directive
-
-# # Generate a list of module names
-
-# for module in $modules; do
-#   echo "   $module" >> source/index.rst
-# done
-
-# # Change the maxdepth to 4 in the toctree directive
-# sed -i 's/:maxdepth: 2/:maxdepth: 4/' source/index.rst
-
-# echo "Generating HTML for each module..."
-# # Generate HTML for each module
-# for module in $modules; do
-#   echo "Generating HTML for $module..."
-#   make html MOD=$module
-# done
-
-# echo "Copying generated HTML for each module..."
-# # Copy generated HTML for each module
-# for module in $modules; do
-#   echo "Copying HTML for $module..."
-#   cp -r build/html/$module/* .
-# done
-
-# cp -r ./build/html/* .
-
-# echo "Documentation generation completed."
