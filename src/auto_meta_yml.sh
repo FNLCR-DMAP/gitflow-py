@@ -91,12 +91,6 @@ echo "Licence: $LICENSE"
 export SOURCE_URL="$REPO_URL/archive/$BRANCH.tar.gz"
 echo "Source: $SOURCE_URL"
 
-cd ..
-
-# Create the package directory
-mkdir -p "$PACKAGE_NAME"
-cd "$PACKAGE_NAME"
-
 # Create meta.yaml
 cat > meta.yaml <<EOL
 package:
@@ -104,7 +98,7 @@ package:
   version: $PACKAGE_VERSION
 
 source:
-  url: $SOURCE_URL
+  Path: .
 
 build:
   noarch: python
@@ -165,4 +159,3 @@ cat > bld.bat <<EOL
 if errorlevel 1 exit 1
 EOL
 
-rm -rf ../temp_repo

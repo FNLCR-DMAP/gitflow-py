@@ -19,7 +19,7 @@ jobs:
       image: ${{ inputs.image_to_use }}
       credentials:
          username: ${{ github.actor }}
-         password: ${{ secrets.PAT }}
+         password: ${{ secrets.GITHUB_TOKEN }}
          
     steps:
       - name: Show Computing Environment
@@ -35,7 +35,7 @@ jobs:
       - run: echo "Checking in ${{ inputs.image_to_use }}"
       - uses: actions/checkout@v3
         with:
-          token: ${{ secrets.PAT }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setting Environment
         run: |
