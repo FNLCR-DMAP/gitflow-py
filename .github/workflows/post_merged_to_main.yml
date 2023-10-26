@@ -92,8 +92,11 @@ jobs:
           echo "######### Updating Documentations ##########"
           echo "############################################"
 
+          pip install python-semantic-release
+
           echo "Start updating versions"
           automatic_versioning="$(semantic-release version --no-push --no-commit)"
+          echo "New Version: $automatic_versioning"
           sed -i "s/version='[0-9.]*'/version='$automatic_versioning'/" setup.py
 
           git add setup.py
