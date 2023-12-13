@@ -244,10 +244,10 @@ jobs:
           git config --global --add safe.directory "$current_wd"
 
           # Check if conda-build is installed
-          if ! command -v conda-build &> /dev/null; then
-              echo "conda-build is not installed. Installing..."
-              conda install -c conda-forge conda-build
-          fi
+          # if ! command -v conda-build &> /dev/null; then
+          #     echo "conda-build is not installed. Installing..."
+          #     conda install -c conda-forge conda-build
+          # fi
 
           echo "#####################################################"
           conda config --add channels conda-forge
