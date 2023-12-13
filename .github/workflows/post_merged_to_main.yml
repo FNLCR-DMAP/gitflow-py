@@ -288,7 +288,7 @@ jobs:
 
           # Build the Conda package while ignoring tests
           echo "Building Conda Package Now."
-          conda mambabuild --no-test --python=3.8.16 .
+          conda build --no-test --python=3.8.16 .
 
           PKG_PATH=$(find "/root/miniconda3/conda-bld" -name '*.tar.bz2')
           # --build-only \
