@@ -264,6 +264,8 @@ jobs:
 
           cp -rf ${{ env.conda_recipe }} .
 
+          cat ${{ env.conda_recipe }}
+
           sed -i "s/<CURRENT_VERSION>/$VERSION/g" ./meta.yaml
 
           echo "\n\n##########Current Recipe:##################\n\n" 
