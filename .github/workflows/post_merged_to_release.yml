@@ -85,7 +85,7 @@ jobs:
 
           CONFIG_TOML="[tool.semantic_release.branches.release]\nmatch = \"^release/.*$\""
 
-          echo -e "$CONFIG_TOML" > pyproject.toml
+          echo "$CONFIG_TOML" > pyproject.toml
 
           cat $CONFIG_FILE
 
