@@ -261,10 +261,10 @@ jobs:
                       tr '[:upper:]' '[:lower:]')
 
           PACKAGE_NAME="$REPO_NAME_LOWERCASE"
-          
-          cp -rf ${{ env.conda_recipe }} $PACKAGE_NAME
 
-          sed -i "s/<CURRENT_VERSION>/$VERSION/g" $PACKAGE_NAME/meta.yaml
+          cp -rf ${{ env.conda_recipe }} .
+
+          sed -i "s/<CURRENT_VERSION>/$VERSION/g" ./meta.yaml
 
           echo "\n\n##########Current Recipe:##################\n\n" 
 
