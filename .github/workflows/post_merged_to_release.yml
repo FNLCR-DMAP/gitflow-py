@@ -81,13 +81,24 @@ jobs:
 
           pip install python-semantic-release
 
-          CONFIG_FILE="releaserc.js"
+          CONFIG_FILE="pyproject.json"
 
-          echo "module.exports = {" >> releaserc.js
-          echo "  branches: ['main', 'release/*']," >> releaserc.js
-          echo "};" >> releaserc.js
+          CONFIG_JSON='{
+            "tool": {
+              "semantic_release": {
+                "branches": {
+                  "default_branch": "main",
+                  "major_branch": "main",
+                  "minor_branch": "main",
+                  "release_branches": ["^release/.*$"]
+                }
+              }
+            }
+          }'
 
-          cat releaserc.js
+          echo "$CONFIG_JSON" > $CONFIG_FILE
+
+          cat $CONFIG_FILE
 
           echo "Branches starting with 'release' are included in the release group."
 
