@@ -81,29 +81,18 @@ jobs:
 
           pip install python-semantic-release
 
-          CONFIG_FILE="pyproject.json"
+          CONFIG_FILE="pyproject.toml"
 
-          CONFIG_JSON='{
-            "tool": {
-              "semantic_release": {
-                "branches": {
-                  "default_branch": "main",
-                  "major_branch": "main",
-                  "minor_branch": "main",
-                  "release_branches": ["^release/.*$"]
-                }
-              }
-            }
-          }'
+          CONFIG_TOML="[tool.semantic_release.branches.release]\nmatch = \"^release/.*$\""
 
-          echo "$CONFIG_JSON" > $CONFIG_FILE
+          echo -e "$CONFIG_TOML" > pyproject.toml
 
           cat $CONFIG_FILE
 
           echo "Branches starting with 'release' are included in the release group."
 
           echo "Start updating versions"
-          automatic_versioning="$(semantic-release version -v -c "$CONFIG_FILE" -f json --no-push --no-commit)"
+          automatic_versioning="$(semantic-release version -v -c "$CONFIG_FILE" --no-push --no-commit)"
           echo "VERSION=$automatic_versioning" >> $GITHUB_ENV
           echo "New Version: $automatic_versioning"
           sed -i "s/version='[0-9.]*'/version='$automatic_versioning'/" setup.py
