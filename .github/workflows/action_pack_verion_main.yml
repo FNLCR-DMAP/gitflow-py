@@ -13,8 +13,15 @@ on:
         required: false
         default: 'No'
         type: string
+
+      artifact_rid:
+        required: true
+        type: string
+
     secrets:
       PAT:
+        required: false
+      NIDAP_TOKEN:
         required: false
 
 jobs: 
@@ -142,5 +149,7 @@ jobs:
     uses: fnlcr-dmap/gitflow-py/.github/workflows/post_merged_to_main.yml@main
     with:
       image_to_use: "${{ inputs.image_to_use }}"
+      artifact_rid: "${{ inputs.artifact_rid }}"
     secrets:
       PAT: ${{ secrets.PAT }}
+      NIDAP_TOKEN: ${{ secrets.NIDAP_TOKEN }}
