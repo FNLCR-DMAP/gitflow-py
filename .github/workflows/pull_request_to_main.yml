@@ -63,7 +63,7 @@ jobs:
           . /root/miniconda3/etc/profile.d/conda.sh && conda init bash
           conda activate spac
           
-          bash $current_wd/gitflow-py/src/check_on_merge_to_main.sh "$current_wd"
+          bash $current_wd/gitflow-py/src/run_all_unit_tests.sh "$current_wd"
 
       - name: Checking Version 
         run: |
