@@ -81,16 +81,18 @@ jobs:
 
           pip install python-semantic-release
 
-          CONFIG_FILE=".releaserc.js"
+          CONFIG_FILE="releaserc.js"
 
-          echo "module.exports = {" >> .releaserc.js
-          echo "  branches: ['main', 'release/*']," >> .releaserc.js
-          echo "};" >> .releaserc.js
+          echo "module.exports = {" >> releaserc.js
+          echo "  branches: ['main', 'release/*']," >> releaserc.js
+          echo "};" >> releaserc.js
+
+          cat releaserc.js
 
           echo "Branches starting with 'release' are included in the release group."
 
           echo "Start updating versions"
-          automatic_versioning="$(semantic-release version -v -c "$CONFIG_FILE" --no-push --no-commit)"
+          automatic_versioning="$(semantic-release version -v -c "$CONFIG_FILE" -f json --no-push --no-commit)"
           echo "VERSION=$automatic_versioning" >> $GITHUB_ENV
           echo "New Version: $automatic_versioning"
           sed -i "s/version='[0-9.]*'/version='$automatic_versioning'/" setup.py
@@ -107,8 +109,8 @@ jobs:
           # if [ -n "${nothing_for_commit}" ]; then
           #   echo "Commit check failed with message: $nothing_for_commit" 
           # else
-          # echo "Updating main now."
-          # git push -f origin ${{ github.base_ref }}
+          echo "Updating release now."
+          git push -f origin ${{ github.base_ref }}
           # fi
 
           echo "$(git log --oneline --ancestry-path ${{github.event.pull_request.head.sha}}..HEAD)" > \
