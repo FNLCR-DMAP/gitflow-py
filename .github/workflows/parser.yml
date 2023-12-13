@@ -40,5 +40,4 @@ jobs:
       artifact_rid: "${{ inputs.artifact_rid }}"
       test: "${{ inputs.test }}" 
     secrets:
-      PAT: ${{ secrets.PAT }}
       NIDAP_TOKEN: ${{ secrets.NIDAP_TOKEN }}

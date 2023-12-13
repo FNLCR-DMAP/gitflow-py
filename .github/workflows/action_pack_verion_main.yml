@@ -19,8 +19,6 @@ on:
         type: string
 
     secrets:
-      PAT:
-        required: false
       NIDAP_TOKEN:
         required: false
 
@@ -119,6 +117,8 @@ jobs:
     uses: fnlcr-dmap/gitflow-py/.github/workflows/pull_request_to_release.yml@main
     with:
       image_to_use: "${{ inputs.image_to_use }}"
+    secrets:
+      NIDAP_TOKEN: ${{ secrets.NIDAP_TOKEN }}
 
   Pull_Request_to_Dev_version_main:
     needs: [Checking_for_Event_Trigger]
@@ -151,5 +151,4 @@ jobs:
       image_to_use: "${{ inputs.image_to_use }}"
       artifact_rid: "${{ inputs.artifact_rid }}"
     secrets:
-      PAT: ${{ secrets.PAT }}
       NIDAP_TOKEN: ${{ secrets.NIDAP_TOKEN }}

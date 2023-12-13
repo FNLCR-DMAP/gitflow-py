@@ -14,3 +14,4 @@ jobs:
     uses: fnlcr-bids-sdsi/gitflow-py/.github/workflows/parser.yml@main
     with:
       image_to_use: "<Replace with your image>"
+
