@@ -265,6 +265,9 @@ jobs:
           echo "$(pwd)"
           echo "$(ls)"
 
+          VERSION="${{ env.VERSION }}"
+          echo "New version: $VERSION"
+
           sed -i "s/<CURRENT_VERSION>/$VERSION/g" ./meta.yaml
 
           echo "\n\n##########Current Recipe:##################\n\n" 

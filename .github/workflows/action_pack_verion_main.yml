@@ -120,6 +120,19 @@ jobs:
     secrets:
       NIDAP_TOKEN: ${{ secrets.NIDAP_TOKEN }}
 
+  Post_Merged_to_Release_version_main:
+    needs: [Checking_for_Event_Trigger]
+    if: ${{ needs.Checking_for_Event_Trigger.outputs.pull_check == 'Yes' && 
+            needs.Checking_for_Event_Trigger.outputs.merged_check == 'Yes' && 
+            needs.Checking_for_Event_Trigger.outputs.release_match == 'Yes' && 
+            inputs.test == 'No' }}
+    uses: fnlcr-dmap/gitflow-py/.github/workflows/post_merged_to_release.yml@main
+    with:
+      image_to_use: "${{ inputs.image_to_use }}"
+      artifact_rid: "${{ inputs.artifact_rid }}"
+    secrets:
+      NIDAP_TOKEN: ${{ secrets.NIDAP_TOKEN }}
+
   Pull_Request_to_Dev_version_main:
     needs: [Checking_for_Event_Trigger]
     if: ${{ needs.Checking_for_Event_Trigger.outputs.pull_check == 'Yes' && 
