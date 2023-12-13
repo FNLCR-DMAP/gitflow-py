@@ -92,7 +92,7 @@ jobs:
           echo "Branches starting with 'release' are included in the release group."
 
           echo "Start updating versions"
-          automatic_versioning="$(semantic-release version -c "$CONFIG_FILE" --no-push --no-commit)"
+          automatic_versioning="$(semantic-release version --no-push --no-commit)"
           echo "VERSION=$automatic_versioning" >> $GITHUB_ENV
           echo "New Version: $automatic_versioning"
           sed -i "s/version='[0-9.]*'/version='$automatic_versioning'/" setup.py
