@@ -200,9 +200,8 @@ jobs:
           echo "New version: $VERSION"
 
           sed -i "s/<CURRENT_VERSION>/$VERSION/g" ./meta.yaml
-          sed -i "s/name: spac/name: spac-dev/" ./meta.yaml
-          sed -i "s/name: spac/name: spac-dev/" ./meta.yaml
-          sed -i 's/git_rev: "continuous_deployment"/git_rev: "dev_continuous_deployment"' ./meta.yaml
+          sed -i "s/name: spac/name: spac-dev/g" ./meta.yaml
+          sed -i 's/git_rev: "continuous_deployment"/git_rev: "dev_continuous_deployment"/g' ./meta.yaml
 
           echo "\n\n##########Current Recipe:##################\n\n" 
 
