@@ -14,12 +14,18 @@ on:
         default: 'No'
         type: string
 
-      artifact_rid:
+      artifact_rid_production:
+        required: true
+        type: string
+      
+      artifact_rid_development:
         required: true
         type: string
 
     secrets:
-      NIDAP_TOKEN:
+      NIDAP_TOKEN_PRODUCTION:
+        required: false
+      NIDAP_TOKEN_DEVELOPMENT:
         required: false
 
 jobs: 
@@ -129,9 +135,9 @@ jobs:
     uses: fnlcr-dmap/gitflow-py/.github/workflows/post_merged_to_release.yml@main
     with:
       image_to_use: "${{ inputs.image_to_use }}"
-      artifact_rid: "${{ inputs.artifact_rid }}"
+      artifact_rid: "${{ inputs.artifact_rid_development }}"
     secrets:
-      NIDAP_TOKEN: ${{ secrets.NIDAP_TOKEN }}
+      NIDAP_TOKEN: ${{ secrets.NIDAP_TOKEN_DEVELOPMENT }}
 
   Pull_Request_to_Dev_version_main:
     needs: [Checking_for_Event_Trigger]
@@ -162,6 +168,6 @@ jobs:
     uses: fnlcr-dmap/gitflow-py/.github/workflows/post_merged_to_main.yml@main
     with:
       image_to_use: "${{ inputs.image_to_use }}"
-      artifact_rid: "${{ inputs.artifact_rid }}"
+      artifact_rid: "${{ inputs.artifact_rid_production }}"
     secrets:
-      NIDAP_TOKEN: ${{ secrets.NIDAP_TOKEN }}
+      NIDAP_TOKEN: ${{ secrets.NIDAP_TOKEN_PRODUCTION }}

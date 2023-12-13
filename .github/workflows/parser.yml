@@ -15,7 +15,12 @@ on:
         default: main
         type: string
 
-      artifact_rid:
+      artifact_rid_production:
+        required: false
+        type: string
+        default: 'ri.artifacts.main.repository.17a52d33-f600-4a19-8969-71d0601af346'
+      
+      artifact_rid_development:
         required: false
         type: string
         default: 'ri.artifacts.main.repository.00852eef-c60b-4b78-8f14-cd48cdfde051'
@@ -28,16 +33,20 @@ on:
     secrets:
       PAT:
         required: false
-      NIDAP_TOKEN:
+      NIDAP_TOKEN_PRODUCTION:
         required: false
-        
+      NIDAP_TOKEN_DEVELOPMENT:
+        required: false
 jobs:
   Activate_Action_Pack:
     if: ${{ inputs.verions_to_use == 'main' }}
     uses: fnlcr-dmap/gitflow-py/.github/workflows/action_pack_verion_main.yml@main
     with:
       image_to_use: "${{ inputs.image_to_use }}"
-      artifact_rid: "${{ inputs.artifact_rid }}"
+      artifact_rid_production: "${{ inputs.artifact_rid_production }}"
+      artifact_rid_development: "${{ inputs.artifact_rid_development }}"
       test: "${{ inputs.test }}" 
     secrets:
-      NIDAP_TOKEN: ${{ secrets.NIDAP_TOKEN }}
+      NIDAP_TOKEN_PRODUCTION: ${{ secrets.NIDAP_TOKEN_PRODUCTION }}
+      NIDAP_TOKEN_DEVELOPMENT: ${{ secrets.NIDAP_TOKEN_DEVELOPMENT }}
+
