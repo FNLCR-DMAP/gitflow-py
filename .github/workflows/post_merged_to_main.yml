@@ -337,7 +337,7 @@ jobs:
 
           echo "Uploading to"
           echo "https://nidap.nih.gov/artifacts/api/repositories/${{ inputs.artifact_rid }}/contents/release/conda/$PLATFORM/$PACKAGE"
-          echo "now...""
+          echo "now..."
           response=$(curl \
                     -H "Authorization: Bearer $TOKEN" \
                     -H "Content-Type: application/octet-stream" \
