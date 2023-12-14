@@ -196,6 +196,12 @@ jobs:
           # Calling documentation script
           git checkout main
 
+          echo "$(ls)"
+
+          cat setup.py
+
+
+
           bash ../gitflow-py/src/document_generation.sh
 
           rm commit_log.log
