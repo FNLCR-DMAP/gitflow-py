@@ -194,6 +194,8 @@ jobs:
           #############################################################
           # Generating GitHub page now
           # Calling documentation script
+          git checkout main
+          
           bash ../gitflow-py/src/document_generation.sh
 
           rm commit_log.log
