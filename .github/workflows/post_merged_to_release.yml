@@ -85,7 +85,7 @@ jobs:
 
           CONFIG_FILE="pyproject.toml"
 
-          CONFIG_TOML="[tool.semantic_release.branches.\"release\"]\nmatch = \"^release.*$\"\nversion = \"$current_version\""
+          CONFIG_TOML="[tool.semantic_release.branches.\"release\"]\nmatch = \"^release.*$\"\nversion_variables = [\"setup.py:version\"]"
 
           echo "$CONFIG_TOML" > pyproject.toml
 
@@ -93,13 +93,21 @@ jobs:
 
           echo "Branches starting with 'release' are included in the release group."
 
-          echo "Start updating versions"
+          echo "Start updating version from $current_version"
           automatic_versioning="$(semantic-release version --no-push --no-commit)"
+
+          if [ -z "$automatic_versioning" ]; then
+              echo "No version update is in this round, using previous version: $current_version"
+              automatic_versioning="$current_version"
+          else
+              echo "Version updated to: $automatic_versioning"
+          fi
+
           echo "VERSION=$automatic_versioning" >> $GITHUB_ENV
           echo "New Version: $automatic_versioning"
           sed -i "s/version='[0-9.]*'/version='$automatic_versioning'/" setup.py
 
-          find src -type f -name '__init__.py' -exec sed -i 's/__version__ = "[0-9.]*"/__version__ = "$automatic_versioning"/' {} +
+          find src -type f -name '__init__.py' -exec sed -i 's/__version__ = "[0-9.]*"/__version__ = "'"${automatic_versioning}"'"/' {} +
 
           git add src
           git add setup.py
