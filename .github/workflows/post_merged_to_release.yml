@@ -162,7 +162,7 @@ jobs:
           export current_wd="/__w/${GITHUB_REPOSITORY#*/}/${GITHUB_REPOSITORY#*/}"
           cd $current_wd/${GITHUB_REPOSITORY#*/}
 
-          git checkout main
+          git checkout ${{ github.base_ref }}
 
           cd ../
           mkdir conda_pkg_building
