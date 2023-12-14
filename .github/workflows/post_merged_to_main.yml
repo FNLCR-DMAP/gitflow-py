@@ -176,6 +176,20 @@ jobs:
 
           git push origin $TAG_NAME
 
+
+          echo "########### Automatically Updating dev Branch ##########"
+          git checkout dev
+          git merge origin main
+          git push -f origin dev
+
+          echo "########### Automatically Updating dev Branch ##########"
+          git checkout release_dev
+          git merge origin main
+          git push -f origin release_dev
+
+          echo "############# Update Complete! ##################"
+
+          #############################################################
           # Generating GitHub page now
           # Calling documentation script
           bash ../gitflow-py/src/document_generation.sh
@@ -184,8 +198,9 @@ jobs:
           
           git add --all
 
-          git commit -a -m "Adding auto-generated files"  
-          
+          git commit -a -m "Adding auto-generated files"            
+
+          ####################################################
           # Processing github_page branch      
           
           echo "Processing github_page branch"
@@ -226,20 +241,6 @@ jobs:
           fi
           
           echo "Process completed."
-
-          echo "########### Automatically Updating dev Branch ##########"
-          git checkout dev
-          git merge origin main
-          git push -f origin dev
-
-          echo "########### Automatically Updating dev Branch ##########"
-          git checkout release_dev
-          git merge origin main
-          git push -f origin release_dev
-
-          echo "############# Update Complete! ##################"
-
-
 
       - name: Generating Conda Package
         id: prepare-conda-pkg 

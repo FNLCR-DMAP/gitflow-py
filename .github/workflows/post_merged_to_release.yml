@@ -104,6 +104,7 @@ jobs:
           git add src
           git add setup.py
           git add CHANGELOG.md
+          rm -f pyproject.toml
 
           echo $(git commit -a -m "docs(version): Automatic development release") > commit_log.log
           cat commit_log.log
