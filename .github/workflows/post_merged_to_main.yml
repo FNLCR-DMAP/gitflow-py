@@ -114,7 +114,7 @@ jobs:
           fi
           echo "VERSION=$automatic_versioning" >> $GITHUB_ENV
           echo "New Version: $automatic_versioning"
-          sed -i 's/version="[0-9.]*"/version="'"${automatic_versioning}"'"/' setup.py
+          sed -i 's/version=["'\''][0-9.]*["'\'']/version="'"${automatic_versioning}"'"/' setup.py
 
           find src -type f -name '__init__.py' -exec sed -i 's/__version__ = "[0-9.]*"/__version__ = "'"${automatic_versioning}"'"/' {} +
 
