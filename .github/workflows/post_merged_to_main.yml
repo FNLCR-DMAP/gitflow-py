@@ -97,13 +97,28 @@ jobs:
           echo "############################################"
 
           pip install python-semantic-release
+          
+          current_version="$(grep -oP 'version=['\''"][^'\''"\n]+'\' setup.py | sed 's/version=//; s/["'\'']//g')"
 
-          echo "Start updating versions"
+          CONFIG_TOML="[tool.semantic_release.branches.main]\nversion = \"$current_version\""
+
+          echo "$CONFIG_TOML" > pyproject.toml
+
+          echo "Start updating versions from $current_version"
           automatic_versioning="$(semantic-release version --no-push --no-commit)"
+          if [ -z "$automatic_versioning" ]; then
+              echo "No version update is in this round, using previous version: $current_version"
+              automatic_versioning="$current_version"
+          else
+              echo "Version updated to: $automatic_versioning"
+          fi
           echo "VERSION=$automatic_versioning" >> $GITHUB_ENV
           echo "New Version: $automatic_versioning"
           sed -i "s/version='[0-9.]*'/version='$automatic_versioning'/" setup.py
 
+          find src -type f -name '__init__.py' -exec sed -i 's/__version__ = "[0-9.]*"/__version__ = "$automatic_versioning"/' {} +
+
+          git add src
           git add setup.py
           git add CHANGELOG.md
 
@@ -211,6 +226,20 @@ jobs:
           fi
           
           echo "Process completed."
+
+          echo "########### Automatically Updating dev Branch ##########"
+          git checkout dev
+          git merge origin main
+          git push -f origin dev
+
+          echo "########### Automatically Updating dev Branch ##########"
+          git checkout release_dev
+          git merge origin main
+          git push -f origin release_dev
+
+          echo "############# Update Complete! ##################"
+
+
 
       - name: Generating Conda Package
         id: prepare-conda-pkg 

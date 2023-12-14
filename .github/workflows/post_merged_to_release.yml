@@ -81,9 +81,11 @@ jobs:
 
           pip install python-semantic-release
 
+          current_version="$(grep -oP 'version=['\''"][^'\''"\n]+'\' setup.py | sed 's/version=//; s/["'\'']//g')"
+
           CONFIG_FILE="pyproject.toml"
 
-          CONFIG_TOML="[tool.semantic_release.branches."release"]\nmatch = \"^release.*$\""
+          CONFIG_TOML="[tool.semantic_release.branches.\"release\"]\nmatch = \"^release.*$\"\nversion = \"$current_version\""
 
           echo "$CONFIG_TOML" > pyproject.toml
 
@@ -97,6 +99,9 @@ jobs:
           echo "New Version: $automatic_versioning"
           sed -i "s/version='[0-9.]*'/version='$automatic_versioning'/" setup.py
 
+          find src -type f -name '__init__.py' -exec sed -i 's/__version__ = "[0-9.]*"/__version__ = "$automatic_versioning"/' {} +
+
+          git add src
           git add setup.py
           git add CHANGELOG.md
 
@@ -153,6 +158,11 @@ jobs:
             $latest_commit_hash
 
           git push origin $TAG_NAME
+
+          echo "########### Automatically Updating dev Branch ##########"
+          git checkout dev
+          git merge origin release_dev
+          git push -f origin dev
 
       - name: Generating Conda Package
         id: prepare-conda-pkg 
