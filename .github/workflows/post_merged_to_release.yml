@@ -161,6 +161,7 @@ jobs:
           git push origin $TAG_NAME
 
           echo "########### Automatically Updating dev Branch ##########"
+          git fetch
           git checkout dev
           git merge origin release_dev
           git push -f origin dev
