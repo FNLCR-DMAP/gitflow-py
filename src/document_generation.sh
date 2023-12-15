@@ -9,12 +9,7 @@ theme="sphinx_rtd_theme"
 # for GitHub page.
 
 echo "Parsing setup.py..."
-# raw_author_array=()
-# counter=0
-# while IFS= read -r line && [ $counter -lt 8 ]; do
-#   raw_author_array+=("$line")
-#   ((counter++))
-# done < ../pyproject.toml
+
 setup_file="../setup.py"
 
 # Extract the version field
@@ -47,29 +42,24 @@ echo "Quickstart Configured..."
 
 echo "Updating Configuration..."
 
-echo "import os" >> source/conf.py
-echo "import os" >> source/conf.py
-echo "import sys" >> source/conf.py
-echo "path = os.path.abspath('../../src')" >> source/conf.py
-echo "sys.path.insert(0,path)" >> source/conf.py
-echo "extensions = ['sphinx.ext.napoleon', 'sphinx.ext.autodoc', 'sphinx.ext.autosectionlabel']" >> source/conf.py
+# Update Sphinx configuration
+cat <<EOL >> "${source_dir}/conf.py"
+import os
+import sys
 
-# Adding theme. Currentlu using
-# Read the Docs Sphinx Theme 
+path = os.path.abspath('../../${modules_dir}')
+sys.path.insert(0, path)
 
-sed -i "s/^html_theme = .*/html_theme = \"$theme\"/" source/conf.py
-
-# Enable navigation bar
-echo "html_theme_options = {'collapse_navigation': False, 'navigation_depth': 6}" >> source/conf.py
-
-# Set path to logo
-# echo "html_logo = 'path_to_logo.png'" >> source/conf.py
-
-# Set path to favicon
-# echo "html_favicon = 'path_to_favicon.ico'" >> source/conf.py
-
-# Enable table of contents sidebar
-# echo "html_sidebars = {'**': ['index.html', 'sourcelink.html', 'searchbox.html']}" >> source/conf.py
+extensions = ['sphinx.ext.napoleon', 'sphinx.ext.autodoc', 'sphinx.ext.autosectionlabel']
+html_theme = "${theme}"
+html_theme_options = {
+    'collapse_navigation': False,    # Keep navigation expanded by default
+    'navigation_depth': 6,
+    'style_nav_header_background': '#333',  # Background color for the navigation header
+    'sticky_navigation': True,       # Enable sticky navigation bar on the right
+}
+html_sidebars = {'**': ['localtoc.html', 'relations.html', 'searchbox.html']}
+EOL
 
 
 ###################### Generalized Method #########################
@@ -78,8 +68,13 @@ sphinx-apidoc -f -o source ../src/spac
 
 sed -i 's/:maxdepth: 2/:maxdepth: 4/' source/index.rst
 
+# Include README.md on the landing page
+echo ".. include:: ../README.md" >> source/index.rst
+
 echo "Generating html now..."
 make html
 
-cp -r build/html/* .
+cp -r build/html/* ./
+
+echo "Documentation generation completed."
 ###################################################################
