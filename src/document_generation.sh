@@ -54,7 +54,9 @@ echo "html_theme_options = {
     'collapse_navigation': False,
     'navigation_depth': 4,
     'sticky_navigation': True,
-    'titles_only': False
+    'titles_only': False,
+    'style_external_links': True,
+    'style_nav_header_background': 'blue'
 }" >> source/conf.py
 
 ###################### Generalized Method #########################
