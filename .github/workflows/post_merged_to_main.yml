@@ -196,7 +196,7 @@ jobs:
           # Calling documentation script
           git checkout main
 
-          pip install --upgrade numpy
+          conda install numpy=1.20.3
 
           bash ../gitflow-py/src/document_generation.sh
 
