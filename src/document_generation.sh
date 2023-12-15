@@ -15,7 +15,7 @@ echo "Parsing setup.py..."
 #   raw_author_array+=("$line")
 #   ((counter++))
 # done < ../pyproject.toml
-setup_file="setup.py"
+setup_file="../setup.py"
 
 # Extract the version field
 version=$(grep -oP "version=['\"]\K[^'\"]+" "$setup_file")

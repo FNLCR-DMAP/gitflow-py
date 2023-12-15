@@ -196,8 +196,6 @@ jobs:
           # Calling documentation script
           git checkout main
 
-          echo "$(ls)"
-
           cat setup.py
 
           chmod ugo+r setup.py
