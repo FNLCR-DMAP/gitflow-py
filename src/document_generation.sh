@@ -69,7 +69,7 @@ sphinx-apidoc -f -o source ../src/spac
 sed -i 's/:maxdepth: 2/:maxdepth: 4/' source/index.rst
 
 # Include README.md on the landing page
-echo ".. include:: ../README.md" >> source/index.rst
+echo ".. include:: ../../README.md" >> source/index.rst
 
 echo "Generating html now..."
 make html

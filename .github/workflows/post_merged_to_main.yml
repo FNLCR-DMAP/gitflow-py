@@ -196,13 +196,13 @@ jobs:
           # Calling documentation script
           git checkout main
 
-          conda install numpy=1.20.3
-
           ####################################################
           ####################################################
           ####################################################
 
           pip install .
+
+          conda install numpy=1.20.3
 
           bash ../gitflow-py/src/document_generation.sh
 
