@@ -43,24 +43,13 @@ echo "Quickstart Configured..."
 echo "Updating Configuration..."
 
 # Update Sphinx configuration
-cat <<EOL >> "${source_dir}/conf.py"
-import os
-import sys
-
-path = os.path.abspath('../../${modules_dir}')
-sys.path.insert(0, path)
-
-extensions = ['sphinx.ext.napoleon', 'sphinx.ext.autodoc', 'sphinx.ext.autosectionlabel']
-html_theme = "${theme}"
-html_theme_options = {
-    'collapse_navigation': False,    # Keep navigation expanded by default
-    'navigation_depth': 6,
-    'style_nav_header_background': '#333',  # Background color for the navigation header
-    'sticky_navigation': True,       # Enable sticky navigation bar on the right
-}
-html_sidebars = {'**': ['localtoc.html', 'relations.html', 'searchbox.html']}
-EOL
-
+echo "import os" >> source/conf.py
+echo "import sys" >> source/conf.py
+echo "path = os.path.abspath('../../src')" >> source/conf.py
+echo "sys.path.insert(0,path)" >> source/conf.py
+echo "extensions = ['sphinx.ext.napoleon', 'sphinx.ext.autodoc', 'sphinx.ext.autosectionlabel']" >> source/conf.py
+sed -i "s/^html_theme = .*/html_theme = \"$theme\"/" source/conf.py
+echo "html_theme_options = {'collapse_navigation': False, 'navigation_depth': 3, 'sticky_navigation': True}" >> source/conf.py
 
 ###################### Generalized Method #########################
 echo "Updating documentation..."
