@@ -50,7 +50,12 @@ echo "path = os.path.abspath('../../src')" >> source/conf.py
 echo "sys.path.insert(0,path)" >> source/conf.py
 echo "extensions = ['sphinx.ext.napoleon', 'sphinx.ext.autodoc', 'sphinx.ext.autosectionlabel']" >> source/conf.py
 sed -i "s/^html_theme = .*/html_theme = \"$theme\"/" source/conf.py
-echo "html_theme_options = {'collapse_navigation': False, 'navigation_depth': 3, 'sticky_navigation': True}" >> source/conf.py
+echo "html_theme_options = {
+    'collapse_navigation': False,
+    'navigation_depth': 4,
+    'sticky_navigation': True,
+    'titles_only': False
+}" >> source/conf.py
 
 ###################### Generalized Method #########################
 echo "Updating documentation..."
