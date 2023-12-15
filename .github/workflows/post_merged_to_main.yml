@@ -196,11 +196,7 @@ jobs:
           # Calling documentation script
           git checkout main
 
-          cat setup.py
-
-          chmod ugo+r setup.py
-
-
+          pip install --upgrade numpy
 
           bash ../gitflow-py/src/document_generation.sh
 
