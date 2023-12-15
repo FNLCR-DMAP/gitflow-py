@@ -200,6 +200,8 @@ jobs:
 
           cat setup.py
 
+          chmod ugo+r setup.py
+
 
 
           bash ../gitflow-py/src/document_generation.sh
