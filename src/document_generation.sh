@@ -60,7 +60,9 @@ echo "extensions = [
 	'sphinx.ext.todo',
 	'sphinx.ext.viewcode',
 	'sphinx.ext.githubpages',
+	'sphinx.ext.autosummary',
 	'm2r']" >> source/conf.py
+echo "autosummary_generate = True" >> source/conf.py
 echo "source_suffix = ['.rst', '.md']" >> source/conf.py
 sed -i "s/^html_theme = .*/html_theme = \"$theme\"/" source/conf.py
 echo "html_theme_options = {
@@ -91,32 +93,36 @@ cat > source/index.rst <<EOF
 
 EOF
 
-# Create a directory for the module function details if it doesn't exist
-mkdir -p "$DOC_DIR/modules"
-
 # Loop through the Python module files in the source directory
 for MODULE in $(find "$SRC_DIR" -type f -name "*.py" ! -name "__init__.py"); do
   # Extract the module name without the path and .py extension
   MODULE_NAME=$(basename "$MODULE" .py)
   # Define the path to the rst file
-  RST_FILE="$DOC_DIR/modules/${MODULE_NAME}.rst"
+  RST_FILE="$DOC_DIR/${MODULE_NAME}.rst"
 
   # Write the automodule directive to the rst file
   echo ".. automodule:: spac.$MODULE_NAME" > "$RST_FILE"
   echo "   :members:" >> "$RST_FILE"
   echo "   :undoc-members:" >> "$RST_FILE"
   echo "   :show-inheritance:" >> "$RST_FILE"
-  echo "   :toctree: modules" >> "$RST_FILE"
+  echo "" >> "$RST_FILE"
+  echo ".. autosummary::" >> "$RST_FILE"
+  echo "   :toctree: _autosummary" >> "$RST_FILE"
+  echo "   :template: custom-module-template.rst" >> "$RST_FILE"
+
+  # Extract function names from the module
+  FUNCTIONS=$(grep -Po 'def \K\w+' "$MODULE")
+
+  for FUNC in $FUNCTIONS; do
+    echo "   spac.$MODULE_NAME.$FUNC" >> "$RST_FILE"
+  done
+
   echo "" >> "$RST_FILE"
 
   echo "Updated documentation for $MODULE_NAME"
 done
 
-# Update the main index.rst to include the modules directory in the toctree
-echo ".. toctree::" >> "$DOC_DIR/index.rst"
-echo "   :maxdepth: 2" >> "$DOC_DIR/index.rst"
-echo "" >> "$DOC_DIR/index.rst"
-echo "   modules" >> "$DOC_DIR/index.rst"
+echo "All submodules and their functions have been updated."
 
 echo "All submodules have been updated."
 
