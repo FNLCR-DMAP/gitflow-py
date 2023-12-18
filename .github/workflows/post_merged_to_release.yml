@@ -75,8 +75,20 @@ jobs:
           cd $current_wd/${GITHUB_REPOSITORY#*/}
           git checkout ${{ github.base_ref }}
 
+          last_hash="$(github.event.pull_request.head.sha)"
+
           echo "############################################"
-          echo "######### Updating Version ##########"
+          echo "######## Laset Commit Before Merge #########"
+          echo "############################################"
+
+          echo "Last Hash: $last_hash"
+
+          echo "Last Commit Message Before Merge: "
+
+          echo "$(git log --format="%s" -n 1 $last_hash)"
+
+          echo "############################################"
+          echo "############# Updating Version #############"
           echo "############################################"
 
           pip install python-semantic-release
@@ -84,6 +96,10 @@ jobs:
           cat setup.py
 
           current_version=$(sed -n "s/^ *version=['\"]\([^'\"]*\)['\"].*/\1/p" setup.py)
+
+          echo "Creating tag on last version for version bumping..."
+
+          git tag "v$current_version" "$last_hash"
 
           CONFIG_FILE="pyproject.toml"
 
