@@ -86,7 +86,7 @@ $name Documentation
 Welcome to the $name's documentation!
 --------------------------------------
 
-.. mdinclude:: ../../README.md
+.. mdinclude:: ../README.md
 
 Indices and tables
 ==================
