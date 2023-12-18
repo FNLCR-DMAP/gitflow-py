@@ -75,15 +75,13 @@ jobs:
           cd $current_wd/${GITHUB_REPOSITORY#*/}
           git checkout ${{ github.base_ref }}
 
-          last_hash_on_merge="${{ github.event.pull_request.head.sha }}"
-
-          last_hash="$(git log -n 1 --skip=1 --format="%H" $last_hash_on_merge)"
+          last_hash="$(git rev-list -n 1 dev_continuous_deployment)"
 
           echo "############################################"
-          echo "######## Laset Commit Before Merge #########"
+          echo "####### Last Tagged Has Before Merge #######"
           echo "############################################"
 
-          echo "Last Hash: $last_hash"
+          echo "Last Tagged Hash: $last_hash"
 
           echo "Last Commit Message Before Merge: "
 
