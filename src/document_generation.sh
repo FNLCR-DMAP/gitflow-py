@@ -4,6 +4,10 @@ mkdir docs/
 cd docs/
 theme="sphinx_rtd_theme"
 
+# Define the source and destination directories
+SRC_DIR="../src/spac"
+DOC_DIR="./source"
+
 # This is step to use the sphinx-quickstart tool
 # to setup the project, and generate html files
 # for GitHub page.
@@ -69,7 +73,7 @@ echo "html_theme_options = {
 
 ###################### Generalized Method #########################
 echo "Updating documentation..."
-sphinx-apidoc -f -o source ../src/spac
+sphinx-apidoc -f -o source "$SRC_DIR"
 
 # sed -i 's/:maxdepth: 2/:maxdepth: 3/' source/index.rst
 
@@ -84,7 +88,6 @@ ${name^^} Documentation
 
 .. toctree::
    :maxdepth: 4
-   :caption: Contents:
 
    self
    modules
@@ -95,6 +98,29 @@ Indices and tables
 * :ref:\`genindex\`
 * :ref:\`modindex\`
 EOF
+
+# Loop through the Python module files in the source directory
+for MODULE in $(find "$SRC_DIR" -type f -name "*.py" ! -name "__init__.py"); do
+  # Extract the module name without the path and .py extension
+  MODULE_NAME=$(basename "$MODULE" .py)
+  # Define the path to the rst file
+  RST_FILE="$DOC_DIR/${MODULE_NAME}.rst"
+
+  # Write the automodule directive to the rst file
+  echo ".. automodule:: spac.$MODULE_NAME" > "$RST_FILE"
+  echo "   :members:" >> "$RST_FILE"
+  echo "   :undoc-members:" >> "$RST_FILE"
+  echo "   :show-inheritance:" >> "$RST_FILE"
+  echo "" >> "$RST_FILE"
+
+  # Optionally, add the module to the main index.rst toctree
+  # You can uncomment the following line if you want to do this automatically
+  # echo "   ${MODULE_NAME}" >> "$DOC_DIR/index.rst"
+
+  echo "Updated documentation for $MODULE_NAME"
+done
+
+echo "All submodules have been updated."
 
 echo "Generating html now..."
 make html
