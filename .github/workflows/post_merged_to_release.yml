@@ -75,7 +75,9 @@ jobs:
           cd $current_wd/${GITHUB_REPOSITORY#*/}
           git checkout ${{ github.base_ref }}
 
-          last_hash="${{ github.event.pull_request.head.sha }}"
+          last_hash_on_merge="${{ github.event.pull_request.head.sha }}"
+
+          last_hash="$(git log -n 1 --skip=1 --format="%H" $last_hash_on_merge)"
 
           echo "############################################"
           echo "######## Laset Commit Before Merge #########"
