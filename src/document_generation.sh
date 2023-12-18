@@ -92,11 +92,6 @@ ${name^^} Documentation
    self
    modules
 
-Indices and tables
-==================
-
-* :ref:\`genindex\`
-* :ref:\`modindex\`
 EOF
 
 # Loop through the Python module files in the source directory
