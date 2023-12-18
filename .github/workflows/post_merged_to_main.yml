@@ -97,8 +97,10 @@ jobs:
           echo "############################################"
 
           # pip install python-semantic-release
+
+          cat setup.py
           
-          current_version="$(grep -oP 'version=['\''"][^'\''"\n]+'\' setup.py | sed 's/version=//; s/["'\'']//g')"
+          current_version=$(sed -n "s/^ *version=['\"]\([^'\"]*\)['\"].*/\1/p" setup.py)
 
           # CONFIG_TOML="[tool.semantic_release.branches.main]\nmatch = \"main\"\nversion_variables = [\"setup.py:version\"]"
 
