@@ -60,6 +60,8 @@ jobs:
 
           conda install sphinx sphinx_rtd_theme
 
+          conda install -c conda-forge m2r
+
       - name: Generating Documentations
         id: prepare-push 
         if: ${{ success() }}
