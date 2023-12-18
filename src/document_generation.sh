@@ -80,14 +80,14 @@ cat > source/index.rst <<EOF
 ${name^^} Documentation
 ===============================
 
+.. mdinclude:: ../../README.md
+
 .. toctree::
    :maxdepth: 4
    :caption: Contents:
 
    self
    modules
-
-.. mdinclude:: ../../README.md
 
 Indices and tables
 ==================
