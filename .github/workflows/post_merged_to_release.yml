@@ -81,6 +81,8 @@ jobs:
 
           pip install python-semantic-release
 
+          cat setup.py
+
           current_version=$(sed -n "s/^ *version=['\"]\([^'\"]*\)['\"].*/\1/p" setup.py)
 
           CONFIG_FILE="pyproject.toml"
