@@ -58,7 +58,7 @@ echo "extensions = [
 sed -i "s/^html_theme = .*/html_theme = \"$theme\"/" source/conf.py
 echo "html_theme_options = {
     'collapse_navigation': False,
-    'navigation_depth': 3,
+    'navigation_depth': 4,
     'sticky_navigation': True,
     'titles_only': False,
     'style_external_links': True,
@@ -74,17 +74,15 @@ sphinx-apidoc -f -o source ../src/spac
 # echo ".. mdinclude:: ../../README.md" >> source/index.rst
 
 cat > source/index.rst <<EOF
-$name Documentation
+${name^^} Documentation
 ===============================
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 4
    :caption: Contents:
 
+   self
    modules
-
-Welcome to the $name's documentation!
---------------------------------------
 
 .. mdinclude:: ../README.md
 
@@ -93,7 +91,6 @@ Indices and tables
 
 * :ref:\`genindex\`
 * :ref:\`modindex\`
-* :ref:\`search\`
 EOF
 
 echo "Generating html now..."
