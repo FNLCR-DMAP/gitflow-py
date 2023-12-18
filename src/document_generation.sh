@@ -54,7 +54,9 @@ echo "extensions = [
 	'sphinx.ext.autosectionlabel',
 	'sphinx.ext.todo',
 	'sphinx.ext.viewcode',
-	'sphinx.ext.githubpages']" >> source/conf.py
+	'sphinx.ext.githubpages',
+	'mr2']" >> source/conf.py
+echo "source_suffix = ['.rst', '.md']" >> source/conf.py
 sed -i "s/^html_theme = .*/html_theme = \"$theme\"/" source/conf.py
 echo "html_theme_options = {
     'collapse_navigation': False,
@@ -84,7 +86,7 @@ ${name^^} Documentation
    self
    modules
 
-.. mdinclude:: ../README.md
+.. mdinclude:: ../../README.md
 
 Indices and tables
 ==================
