@@ -39,6 +39,7 @@ sphinx-quickstart -q --sep \
 
 echo "Quickstart Configured..."
 
+pip install m2r
 
 echo "Updating Configuration..."
 
