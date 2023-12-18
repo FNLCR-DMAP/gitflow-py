@@ -94,35 +94,38 @@ cat > source/index.rst <<EOF
 EOF
 
 # Loop through the Python module files in the source directory
-for MODULE in $(find "$SRC_DIR" -type f -name "*.py" ! -name "__init__.py"); do
-  # Extract the module name without the path and .py extension
-  MODULE_NAME=$(basename "$MODULE" .py)
-  # Define the path to the rst file
-  RST_FILE="$DOC_DIR/${MODULE_NAME}.rst"
+for MODULE in $(find "$SRC_DIR" -name "*.py" ! -name "__init__.py"); do
+    # Extract the module name without the path and .py extension
+    MODULE_NAME=$(basename "$MODULE" .py)
+    # Define the path to the rst file
+    RST_FILE="$DOC_DIR/modules/${MODULE_NAME}.rst"
 
-  # Write the automodule directive to the rst file
-  echo ".. automodule:: spac.$MODULE_NAME" > "$RST_FILE"
-  echo "   :members:" >> "$RST_FILE"
-  echo "   :undoc-members:" >> "$RST_FILE"
-  echo "   :show-inheritance:" >> "$RST_FILE"
-  echo "" >> "$RST_FILE"
-  echo ".. autosummary::" >> "$RST_FILE"
-  echo "   :toctree: _autosummary" >> "$RST_FILE"
-  echo "   :template: custom-module-template.rst" >> "$RST_FILE"
+    # Create a directory for the module rst files if it doesn't exist
+    mkdir -p "$DOC_DIR/modules"
 
-  # Extract function names from the module
-  FUNCTIONS=$(grep -Po 'def \K\w+' "$MODULE")
-
-  for FUNC in $FUNCTIONS; do
-    echo "   spac.$MODULE_NAME.$FUNC" >> "$RST_FILE"
-  done
-
-  echo "" >> "$RST_FILE"
-
-  echo "Updated documentation for $MODULE_NAME"
+    # Write the automodule directive to the rst file
+    echo ".. automodule:: spac.$MODULE_NAME" > "$RST_FILE"
+    echo "   :members:" >> "$RST_FILE"
+    echo "   :undoc-members:" >> "$RST_FILE"
+    echo "   :show-inheritance:" >> "$RST_FILE"
+    echo "   :autosummary:" >> "$RST_FILE"
+    echo "" >> "$RST_FILE"
+    
+    # Append the function names to the rst file
+    FUNCTIONS=$(grep -Po 'def \K\w+' "$MODULE")
+    
+    # Create a corresponding rst file for each function
+    for FUNC in $FUNCTIONS; do
+        FUNC_RST_FILE="$DOC_DIR/modules/${MODULE_NAME}.${FUNC}.rst"
+        echo "spac.$MODULE_NAME.$FUNC" >> "$RST_FILE"
+        echo ".. autofunction:: spac.$MODULE_NAME.$FUNC" > "$FUNC_RST_FILE"
+    done
+    
+    # Include the module's rst file in the main toctree
+    echo "   modules/${MODULE_NAME}" >> "$DOC_DIR/index.rst"
+    
+    echo "Updated documentation for $MODULE_NAME"
 done
-
-echo "All submodules and their functions have been updated."
 
 echo "All submodules have been updated."
 
