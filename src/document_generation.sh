@@ -67,7 +67,7 @@ echo "source_suffix = ['.rst', '.md']" >> source/conf.py
 sed -i "s/^html_theme = .*/html_theme = \"$theme\"/" source/conf.py
 echo "html_theme_options = {
     'collapse_navigation': False,
-    'navigation_depth': 4,
+    'navigation_depth': 3,
     'sticky_navigation': True,
     'titles_only': False,
     'style_external_links': True,
@@ -86,7 +86,7 @@ cat > source/index.rst <<EOF
 .. mdinclude:: ../../README.md
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
 
    self
    modules
