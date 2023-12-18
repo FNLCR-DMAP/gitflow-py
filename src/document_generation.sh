@@ -81,39 +81,42 @@ sphinx-apidoc -f -o source "$SRC_DIR"
 # echo ".. mdinclude:: ../../README.md" >> source/index.rst
 
 cat > source/index.rst <<EOF
-${name^^} Documentation
-===============================
-
 .. mdinclude:: ../../README.md
 
 .. toctree::
-   :maxdepth: 4
+   :maxdepth: 2
 
    self
    modules
 
 EOF
 
+# Create a directory for the module function details if it doesn't exist
+mkdir -p "$DOC_DIR/modules"
+
 # Loop through the Python module files in the source directory
 for MODULE in $(find "$SRC_DIR" -type f -name "*.py" ! -name "__init__.py"); do
   # Extract the module name without the path and .py extension
   MODULE_NAME=$(basename "$MODULE" .py)
   # Define the path to the rst file
-  RST_FILE="$DOC_DIR/${MODULE_NAME}.rst"
+  RST_FILE="$DOC_DIR/modules/${MODULE_NAME}.rst"
 
   # Write the automodule directive to the rst file
   echo ".. automodule:: spac.$MODULE_NAME" > "$RST_FILE"
   echo "   :members:" >> "$RST_FILE"
   echo "   :undoc-members:" >> "$RST_FILE"
   echo "   :show-inheritance:" >> "$RST_FILE"
+  echo "   :toctree: modules" >> "$RST_FILE"
   echo "" >> "$RST_FILE"
-
-  # Optionally, add the module to the main index.rst toctree
-  # You can uncomment the following line if you want to do this automatically
-  # echo "   ${MODULE_NAME}" >> "$DOC_DIR/index.rst"
 
   echo "Updated documentation for $MODULE_NAME"
 done
+
+# Update the main index.rst to include the modules directory in the toctree
+echo ".. toctree::" >> "$DOC_DIR/index.rst"
+echo "   :maxdepth: 2" >> "$DOC_DIR/index.rst"
+echo "" >> "$DOC_DIR/index.rst"
+echo "   modules" >> "$DOC_DIR/index.rst"
 
 echo "All submodules have been updated."
 
