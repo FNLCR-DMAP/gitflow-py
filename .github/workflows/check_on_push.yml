@@ -34,7 +34,7 @@ jobs:
           # Activate bash and conda
           bash
           . /root/miniconda3/etc/profile.d/conda.sh && conda init bash
-          conda activate spac
+          conda activate SCSAWorkflow_NIDAP
           conda list
 
           export current_wd="/__w/${GITHUB_REPOSITORY#*/}/${GITHUB_REPOSITORY#*/}"
@@ -121,7 +121,7 @@ jobs:
 
           bash
           . /root/miniconda3/etc/profile.d/conda.sh && conda init bash
-          conda activate spac
+          conda activate SCSAWorkflow_NIDAP
           
           pytest --version
 

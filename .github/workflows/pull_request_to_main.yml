@@ -24,7 +24,7 @@ jobs:
           echo "Checking in ${{ inputs.image_to_use }}"
           bash
           . /root/miniconda3/etc/profile.d/conda.sh && conda init bash
-          conda activate spac
+          conda activate SCSAWorkflow_NIDAP
           conda list
 
       - run: echo "Running test in ${{ inputs.image_to_use }}"
@@ -61,7 +61,7 @@ jobs:
           echo "$current_wd"
           bash
           . /root/miniconda3/etc/profile.d/conda.sh && conda init bash
-          conda activate spac
+          conda activate SCSAWorkflow_NIDAP
           
           bash $current_wd/gitflow-py/src/run_all_unit_tests.sh "$current_wd"
 
@@ -69,7 +69,7 @@ jobs:
         run: |
           bash
           . /root/miniconda3/etc/profile.d/conda.sh && conda init bash
-          conda activate spac
+          conda activate SCSAWorkflow_NIDAP
 
           # Install semantic-release for versioning
           # The pip installed version does not work

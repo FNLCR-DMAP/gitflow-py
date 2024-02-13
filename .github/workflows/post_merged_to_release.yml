@@ -30,7 +30,7 @@ jobs:
           # Activate bash and conda environment
           bash
           . /root/miniconda3/etc/profile.d/conda.sh && conda init bash
-          conda activate spac
+          conda activate SCSAWorkflow_NIDAP
           echo "Checking in ${{ inputs.image_to_use }}"
           conda list
           
@@ -45,7 +45,7 @@ jobs:
         run: |
           bash
           . /root/miniconda3/etc/profile.d/conda.sh && conda init bash
-          conda activate spac
+          conda activate SCSAWorkflow_NIDAP
 
           export current_wd="/__w/${GITHUB_REPOSITORY#*/}/${GITHUB_REPOSITORY#*/}"
           cd $current_wd
