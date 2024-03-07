@@ -39,7 +39,7 @@ jobs:
         run: |
           bash
           . /root/miniconda3/etc/profile.d/conda.sh && conda init bash
-          conda activate spac
+          conda activate SCSAWorkflow_NIDAP
 
           # Install semantic-release
           # conda install -c conda-forge python-semantic-release
