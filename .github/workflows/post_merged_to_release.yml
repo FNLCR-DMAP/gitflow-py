@@ -104,8 +104,14 @@ jobs:
           CONFIG_FILE="pyproject.toml"
 
           CONFIG_TOML="[tool.semantic_release.branches.\"release\"]\nmatch = \"^release.*$\"\nversion_variables = [\"setup.py:version\"]"
-
+          
           echo "$CONFIG_TOML" > pyproject.toml
+
+          echo "[tool.semantic_release.commit_parser_options]" >> "$CONFIG_FILE"
+          echo "allowed_types = [\"build\", \"chore\", \"ci\", \"docs\", \"feat\", \"fix\", \"perf\", \"style\", \"refactor\", \"test\", \"step\", \"breaking\"]" >> "$CONFIG_FILE"
+          echo "minor_types = [\"step\"]" >> "$CONFIG_FILE"
+          echo "patch_types = [\"fix\", \"perf\", \"feat\"]" >> "$CONFIG_FILE"
+          echo "major_types = [\"breaking\"]" >> "$CONFIG_FILE"
 
           cat $CONFIG_FILE
 
