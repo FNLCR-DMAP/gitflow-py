@@ -126,7 +126,7 @@ jobs:
           rm pyproject_Test.toml
 
           echo "Start updating version from $current_version"
-          automatic_versioning="$(semantic-release version --no-push --no-commit)"
+          automatic_versioning="$(semantic-release version --no-push --no-commit -v DEBUG)"
 
           if [ -z "$automatic_versioning" ]; then
               echo "No version update is in this round, using previous version: $current_version"
