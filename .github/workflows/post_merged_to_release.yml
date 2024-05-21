@@ -134,7 +134,7 @@ jobs:
 
           automatic_versioning="$(semantic-release version --no-push --no-commit)"
 
-          exit 1
+          # exit 1
 
           if [ -z "$automatic_versioning" ]; then
               echo "No version update is in this round, using previous version: $current_version"
