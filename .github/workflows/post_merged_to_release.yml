@@ -112,7 +112,7 @@ jobs:
           echo "allowed_types = [\"build\", \"chore\", \"ci\", \"docs\", \"step\", \"breaking\", \"feat\", \"fix\", \"perf\", \"style\", \"refactor\", \"test\"]" >> "$CONFIG_FILE"
           echo "major_types = [\"breaking\"]" >> "$CONFIG_FILE"
           echo "minor_types = [\"step\"]" >> "$CONFIG_FILE"
-          echo "patch_types = [\"fix\", \"perf\", \"feat\", \"docs"\, \"refactor"\]" >> "$CONFIG_FILE"
+          echo "patch_types = [\"fix\", \"perf\", \"feat\", \"docs"\, \"refactor\"]" >> "$CONFIG_FILE"
 
           echo "" >> "$CONFIG_FILE"
           echo "[tool.semantic_release.version]" >> "$CONFIG_FILE"
