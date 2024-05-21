@@ -119,6 +119,10 @@ jobs:
           echo "minor_tag = \"step\"" >> "$CONFIG_FILE"
           echo "patch_tag = \"fix, perf, feat\"" >> "$CONFIG_FILE"
 
+          cat "$CONFIG_FILE"
+
+          echo "$(ls)"
+
           echo "Branches starting with 'release' are included in the release group."
 
           semantic-release generate-config --pyproject >> pyproject_Test.toml
