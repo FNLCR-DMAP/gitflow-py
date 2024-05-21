@@ -105,25 +105,24 @@ jobs:
 
           CONFIG_TOML="[tool.semantic_release.branches.\"release\"]\nmatch = \"^release.*$\"\nversion_variables = [\"setup.py:version\"]"
           
-          echo "$CONFIG_TOML" > "$CONFIG_FILE"
+          # Write the initial configuration to the file
+          echo -e "$CONFIG_TOML" > "$CONFIG_FILE"
 
-          echo "" >> "$CONFIG_FILE"
-          echo "[tool.semantic_release.commit_parser_options]" >> "$CONFIG_FILE"
+          # Append additional sections to the configuration file
+          echo -e "\n[tool.semantic_release.commit_parser_options]" >> "$CONFIG_FILE"
           echo "allowed_types = [\"build\", \"chore\", \"ci\", \"docs\", \"step\", \"breaking\", \"feat\", \"fix\", \"perf\", \"style\", \"refactor\", \"test\"]" >> "$CONFIG_FILE"
           echo "major_types = [\"breaking\"]" >> "$CONFIG_FILE"
           echo "minor_types = [\"step\"]" >> "$CONFIG_FILE"
-          echo "patch_types = [\"fix\", \"perf\", \"feat\", \"docs"\, \"refactor\"]" >> "$CONFIG_FILE"
+          echo "patch_types = [\"fix\", \"perf\", \"feat\", \"docs\", \"refactor\"]" >> "$CONFIG_FILE"
 
-          echo "" >> "$CONFIG_FILE"
-          echo "[tool.semantic_release.version]" >> "$CONFIG_FILE"
+          echo -e "\n[tool.semantic_release.version]" >> "$CONFIG_FILE"
           echo "minor_tag = \"step\"" >> "$CONFIG_FILE"
           echo "patch_tag = \"fix, perf, feat\"" >> "$CONFIG_FILE"
-          cat $CONFIG_FILE
 
           echo "Branches starting with 'release' are included in the release group."
 
           echo "Start updating version from $current_version"
-          automatic_versioning="$(semantic-release version --no-push --no-commit)"
+          automatic_versioning="$(semantic-release version --no-push --no-commit --debug)"
 
           if [ -z "$automatic_versioning" ]; then
               echo "No version update is in this round, using previous version: $current_version"
@@ -143,7 +142,7 @@ jobs:
           git add CHANGELOG.md
           rm -f pyproject.toml
 
-          echo $(git commit -a -m "docs(version): Automatic development release") > commit_log.log
+          echo $(git commit -a -m "ci(version): Automatic development release") > commit_log.log
           cat commit_log.log
           export nothing_for_commit="$(grep -Po "nothing to commit" commit_log.log)"
 
