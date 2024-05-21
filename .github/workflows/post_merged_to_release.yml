@@ -122,7 +122,7 @@ jobs:
           echo "Branches starting with 'release' are included in the release group."
 
           echo "Start updating version from $current_version"
-          automatic_versioning="$(semantic-release version --no-push --no-commit --debug)"
+          automatic_versioning="$(semantic-release version --no-push --no-commit)"
 
           if [ -z "$automatic_versioning" ]; then
               echo "No version update is in this round, using previous version: $current_version"
