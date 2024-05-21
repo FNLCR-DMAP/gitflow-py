@@ -106,33 +106,23 @@ jobs:
           CONFIG_TOML="[tool.semantic_release.branches.\"release\"]\nmatch = \"^release.*$\"\nversion_variables = [\"setup.py:version\"]"
           
           # Write the initial configuration to the file
-          echo -e "$CONFIG_TOML" > "$CONFIG_FILE"
+          echo "$CONFIG_TOML" > "$CONFIG_FILE"
 
-          # Append additional sections to the configuration file
-          echo -e "\n[tool.semantic_release.commit_parser_options]" >> "$CONFIG_FILE"
-          echo "allowed_types = [\"build\", \"chore\", \"ci\", \"docs\", \"step\", \"breaking\", \"feat\", \"fix\", \"perf\", \"style\", \"refactor\", \"test\"]" >> "$CONFIG_FILE"
-          echo "major_types = [\"breaking\"]" >> "$CONFIG_FILE"
-          echo "minor_types = [\"step\"]" >> "$CONFIG_FILE"
-          echo "patch_types = [\"fix\", \"perf\", \"feat\", \"docs\", \"refactor\"]" >> "$CONFIG_FILE"
+          echo "" >> "$CONFIG_FILE"
+          echo "[tool.semantic_release.commit_parser_options]" >> "$CONFIG_FILE"
+          echo "pattern = \"^(\\\\w*)(?:\\\\((.*)\\\\))?: (.*)\"" >> "$CONFIG_FILE"
+          echo "major = [\"BREAKING CHANGE\"]" >> "$CONFIG_FILE"
+          echo "minor = [\"feat\"]" >> "$CONFIG_FILE"
+          echo "patch = [\"fix\", \"docs\", \"style\", \"refactor\", \"perf\", \"test\", \"chore\"]" >> "$CONFIG_FILE"
+          echo "merge = [\"Merge pull request\"]" >> "$CONFIG_FILE"
 
-          echo -e "\n[tool.semantic_release.version]" >> "$CONFIG_FILE"
-          echo "minor_tag = \"step\"" >> "$CONFIG_FILE"
-          echo "patch_tag = \"fix, perf, feat\"" >> "$CONFIG_FILE"
+          echo "Configuration added to $CONFIG_FILE"
 
           cat "$CONFIG_FILE"
 
-          echo "$(ls)"
-
           echo "Branches starting with 'release' are included in the release group."
 
-          semantic-release generate-config --pyproject >> pyproject_Test.toml
-          cat pyproject_Test.toml
-          rm pyproject_Test.toml
-
-          echo "Start updating version from $current_version"
-          semantic-release version --no-push --no-commit --debug
-          
-          automatic_versioning="$(semantic-release version --no-push --no-commit -v DEBUG)"
+          automatic_versioning="$(semantic-release version --no-push --no-commit)"
 
           if [ -z "$automatic_versioning" ]; then
               echo "No version update is in this round, using previous version: $current_version"
