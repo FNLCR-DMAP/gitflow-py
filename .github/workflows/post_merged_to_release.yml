@@ -121,6 +121,10 @@ jobs:
 
           echo "Branches starting with 'release' are included in the release group."
 
+          semantic-release generate-config --pyproject >> pyproject_Test.toml
+          cat pyproject_Test.toml
+          rm pyproject_Test.toml
+
           echo "Start updating version from $current_version"
           automatic_versioning="$(semantic-release version --no-push --no-commit)"
 
