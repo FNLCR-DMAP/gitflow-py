@@ -110,7 +110,7 @@ jobs:
 
           echo "" >> "$CONFIG_FILE"
           echo "[tool.semantic_release.commit_parser_options]" >> "$CONFIG_FILE"
-          echo "pattern = \"^(\\\\w*)(?:\\\\((.*)\\\\))?: (.*)\"" >> "$CONFIG_FILE"
+          echo "pattern = \"^(\\\\w*)(?:\\\\((.*)\\\\))?: (.*)$\"" >> "$CONFIG_FILE"
           echo "major = [\"BREAKING CHANGE\"]" >> "$CONFIG_FILE"
           echo "minor = [\"feat\"]" >> "$CONFIG_FILE"
           echo "patch = [\"fix\", \"docs\", \"style\", \"refactor\", \"perf\", \"test\", \"chore\"]" >> "$CONFIG_FILE"
