@@ -7,7 +7,7 @@ on:
     
       image_to_use:
         required: false
-        default: ghcr.io/fnlcr-dmap/scsaworkflow:latest
+        default: ghcr.io/ruiheesi/pyscworkflow:latest
         type: string
       
       verions_to_use:
