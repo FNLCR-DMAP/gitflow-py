@@ -98,9 +98,18 @@ jobs:
           current_version=$(sed -n "s/^ *version=['\"]\([^'\"]*\)['\"].*/\1/p" setup.py)
 
           echo "Creating tag on last version for version bumping..."
+          
+          # The name of the tag
+          tag_name="v$current_version"
 
-          git tag "v$current_version" "$last_hash"
-
+          # Check if the tag already exists
+          if git rev-parse "$tag_name" >/dev/null 2>&1; then
+              echo "Tag '$tag_name' already exists."
+          else
+              # If the tag doesn't exist, create it
+              git tag "$tag_name" "$last_hash"
+              echo "Tag '$tag_name' created for commit $last_hash."
+          fi
           CONFIG_FILE="pyproject.toml"
 
           CONFIG_TOML="[tool.semantic_release.branches.\"release\"]\nmatch = \"^release.*$\"\nversion_variables = [\"setup.py:version\"]"
