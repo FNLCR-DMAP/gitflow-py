@@ -205,8 +205,20 @@ jobs:
           ####################################################
 
           pip install .
+          NUMPY_VERSION=$(python -c "import numpy; print(numpy.__version__)" 2>/dev/null || echo "not_installed")
 
-          conda install numpy=1.20.3
+          # Define the required version
+          REQUIRED_VERSION="1.20.3"
+          
+          if [ "$NUMPY_VERSION" = "not_installed" ]; then
+            echo "Numpy is not installed. Installing numpy $REQUIRED_VERSION..."
+            conda install numpy=$REQUIRED_VERSION -y
+          elif [ "$(printf '%s\n' "$REQUIRED_VERSION" "$NUMPY_VERSION" | sort -V | head -n1)" != "$REQUIRED_VERSION" ]; then
+            echo "Numpy version ($NUMPY_VERSION) is less than $REQUIRED_VERSION. Upgrading..."
+            conda install numpy=$REQUIRED_VERSION -y
+          else
+            echo "Numpy is already at version $NUMPY_VERSION or higher."
+          fi
 
           bash ../gitflow-py/src/document_generation.sh
 
