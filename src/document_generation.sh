@@ -1,138 +1,170 @@
 #!/bin/bash
 
-mkdir docs/
-cd docs/
-theme="sphinx_rtd_theme"
+# ─── Prepare docs directory ────────────────────────────────────────────────
+rm -rf docs
+mkdir docs
+cd docs
 
-# Define the source and destination directories
+theme="sphinx_rtd_theme"
 SRC_DIR="../src/spac"
 DOC_DIR="./source"
 
-# This is step to use the sphinx-quickstart tool
-# to setup the project, and generate html files
-# for GitHub page.
-
+# ─── Parse setup.py for metadata ───────────────────────────────────────────
 echo "Parsing setup.py..."
-
 setup_file="../setup.py"
-
-# Extract the version field
 version=$(grep -oP "version=['\"]\K[^'\"]+" "$setup_file")
-
-# Extract the package name field
 name=$(grep -oP "name=['\"]\K[^'\"]+" "$setup_file")
-
-# Extract the author field
 authors=$(grep -oP "author=['\"]\K[^'\"]+" "$setup_file")
-
-# Print the extracted values
 echo "Package Name: $name"
-echo "Version: $version"
-echo "AUthors: $authors"
+echo "Version:     $version"
+echo "Authors:     $authors"
 
-echo "Running Quickstart..."
-
+# ─── sphinx-quickstart ─────────────────────────────────────────────────────
+echo "Running sphinx-quickstart..."
 sphinx-quickstart -q --sep \
-	--ext-autodo \
-	--makefile \
-	-p="$name" \
-	-a="$authors" \
-	-v="$version" \
-	-r="" \
-	-l="en";
-
-echo "Quickstart Configured..."
+    --ext-autodoc \
+    --makefile \
+    -p="$name" \
+    -a="$authors" \
+    -v="$version" \
+    -r="" \
+    -l="en"
 
 pip install m2r
 
-echo "Updating Configuration..."
+# ─── Update conf.py ────────────────────────────────────────────────────────
+echo "Updating conf.py..."
+conf=source/conf.py
 
-# Update Sphinx configuration
-echo "import os" >> source/conf.py
-echo "import os" >> source/conf.py
-echo "import sys" >> source/conf.py
-echo "path = os.path.abspath('../../src')" >> source/conf.py
-echo "sys.path.insert(0,path)" >> source/conf.py
-echo "extensions = [
-	'sphinx.ext.napoleon',
-	'sphinx.ext.autodoc',
-	'sphinx.ext.autosectionlabel',
-	'sphinx.ext.todo',
-	'sphinx.ext.viewcode',
-	'sphinx.ext.githubpages',
-	'sphinx.ext.autosummary',
-	'm2r']" >> source/conf.py
-echo "autosummary_generate = True" >> source/conf.py
-echo "source_suffix = ['.rst', '.md']" >> source/conf.py
-sed -i "s/^html_theme = .*/html_theme = \"$theme\"/" source/conf.py
-echo "html_theme_options = {
+# add imports & sys.path
+cat >> $conf <<'EOF'
+import os
+import sys
+path = os.path.abspath('../../src')
+sys.path.insert(0, path)
+EOF
+
+# append extensions, suffixes, autosummary, theme options
+cat >> $conf <<EOF
+
+extensions = [
+    'sphinx.ext.napoleon',
+    'sphinx.ext.autodoc',
+    'sphinx.ext.autosectionlabel',
+    'sphinx.ext.todo',
+    'sphinx.ext.viewcode',
+    'sphinx.ext.githubpages',
+    'sphinx.ext.autosummary',
+    'm2r'
+]
+autosummary_generate  = True
+source_suffix        = ['.rst', '.md']
+html_theme           = "$theme"
+html_theme_options   = {
     'collapse_navigation': False,
     'navigation_depth': 3,
     'sticky_navigation': True,
-    'titles_only': False,
+    'titles_only': True,
     'style_external_links': True,
-}" >> source/conf.py
+}
 
-###################### Generalized Method #########################
-echo "Updating documentation..."
-sphinx-apidoc -f -o source "$SRC_DIR"
+# add our custom CSS
+html_static_path = ['_static']
+html_css_files  = ['custom.css']
+EOF
 
-# sed -i 's/:maxdepth: 2/:maxdepth: 3/' source/index.rst
+# ─── 3b) Write the custom.css ──────────────────────────────────────────
+mkdir -p source/_static
+cat > source/_static/custom.css <<'EOF'
+/* bold & fully opaque the level-2 toctree links */
+.wy-nav-content ul.toctree-l2 li a {
+    font-weight: 600 !important;
+    opacity: 1 !important;
+}
+EOF
 
-# # Include README.md on the landing page
-# echo ".. mdinclude:: ../../README.md" >> source/index.rst
+# ─── Generate module stubs under source/modules ────────────────────────────
+echo "Generating API docs under source/modules..."
+rm -rf source/modules
+sphinx-apidoc \
+  --force \
+  --module-first \
+  --separate \
+  -o source/modules \
+  "$SRC_DIR"
 
-cat > source/index.rst <<EOF
-.. mdinclude:: ../../README.md
+# ─── 5) Append a “Functions” toctree + emit per‐function stubs ───────────
+echo "Adding Functions sections…"
+for module_py in $SRC_DIR/*.py; do
+  mod=$(basename "$module_py" .py)
+  mod_rst="$DOC_DIR/modules/spac.$mod.rst"
+
+  # only if sphinx-apidoc actually created it
+  if [[ -f "$mod_rst" ]]; then
+    funcs=$(grep -Po '^def \K\w+' "$module_py" || true)
+    if [[ -n "$funcs" ]]; then
+      cat >> "$mod_rst" <<EOF
+
+Functions
+---------
 
 .. toctree::
-   :maxdepth: 3
+   :maxdepth: 1
 
-   self
-   modules
+EOF
+      for f in $funcs; do
+        echo "   ${mod}.${f}" >> "$mod_rst"
+
+        # create a stub file with an explicit heading (no parentheses)
+        stub="$DOC_DIR/modules/${mod}.${f}.rst"
+        underline="$(printf '%*s' "${#f}" '' | tr ' ' '-')"
+        cat > "$stub" <<EOF
+${f}
+${underline}
+
+.. autofunction:: spac.${mod}.${f}
+EOF
+      done
+    fi
+  fi
+done
+
+# ─── 6) Build an index of sub-modules ───────────────────────────────────
+cat > $DOC_DIR/modules/index.rst <<EOF
+spac modules
+============
+
+.. toctree::
+   :maxdepth: 1
 
 EOF
 
-# Loop through the Python module files in the source directory
-for MODULE in $(find "$SRC_DIR" -name "*.py" ! -name "__init__.py"); do
-    # Extract the module name without the path and .py extension
-    MODULE_NAME=$(basename "$MODULE" .py)
-    # Define the path to the rst file
-    RST_FILE="$DOC_DIR/modules/${MODULE_NAME}.rst"
-
-    # Create a directory for the module rst files if it doesn't exist
-    mkdir -p "$DOC_DIR/modules"
-
-    # Write the automodule directive to the rst file
-    echo ".. automodule:: spac.$MODULE_NAME" > "$RST_FILE"
-    echo "   :members:" >> "$RST_FILE"
-    echo "   :undoc-members:" >> "$RST_FILE"
-    echo "   :show-inheritance:" >> "$RST_FILE"
-    echo "   :autosummary:" >> "$RST_FILE"
-    echo "" >> "$RST_FILE"
-    
-    # Append the function names to the rst file
-    FUNCTIONS=$(grep -Po 'def \K\w+' "$MODULE")
-    
-    # Create a corresponding rst file for each function
-    for FUNC in $FUNCTIONS; do
-        FUNC_RST_FILE="$DOC_DIR/modules/${MODULE_NAME}.${FUNC}.rst"
-        echo "spac.$MODULE_NAME.$FUNC" >> "$RST_FILE"
-        echo ".. autofunction:: spac.$MODULE_NAME.$FUNC" > "$FUNC_RST_FILE"
-    done
-    
-    # Include the module's rst file in the main toctree
-    echo "   modules/${MODULE_NAME}" >> "$DOC_DIR/index.rst"
-    
-    echo "Updated documentation for $MODULE_NAME"
+for f in $DOC_DIR/modules/spac.*.rst; do
+  name=$(basename "$f" .rst)
+  echo "   $name" >> $DOC_DIR/modules/index.rst
 done
 
-echo "All submodules have been updated."
+# ─── 7) Rewrite the root index.rst ─────────────────────────────────────
+cat > $DOC_DIR/index.rst <<EOF
+.. mdinclude:: ../../README.md
 
-echo "Generating html now..."
+API Reference
+=============
+
+.. toctree::
+   :maxdepth: 2
+
+   modules/index
+EOF
+
+# ─── 8) Build the HTML + copy to docs root ─────────────────────────────
+echo "Building HTML…"
 make html
 
+echo "Copying HTML + assets…"
 cp -r build/html/* ./
 
-echo "Documentation generation completed."
-###################################################################
+# ensure GitHub Pages serves the _static folder
+cp build/html/.nojekyll ./
+
+echo "✅ Documentation updated."
