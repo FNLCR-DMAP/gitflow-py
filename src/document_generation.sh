@@ -73,7 +73,7 @@ html_static_path = ['_static']
 html_css_files  = ['custom.css']
 EOF
 
-# ─── 3b) Write the custom.css ──────────────────────────────────────────
+# ─── Write the custom.css ────────────────────────────────────────────────
 mkdir -p source/_static
 cat > source/_static/custom.css <<'EOF'
 /* bold & fully opaque the level-2 toctree links */
@@ -93,13 +93,12 @@ sphinx-apidoc \
   -o source/modules \
   "$SRC_DIR"
 
-# ─── 5) Append a “Functions” toctree + emit per‐function stubs ───────────
+# ─── 5) Append a “Functions” toctree + emit per-function stubs ─────────────
 echo "Adding Functions sections…"
 for module_py in $SRC_DIR/*.py; do
   mod=$(basename "$module_py" .py)
   mod_rst="$DOC_DIR/modules/spac.$mod.rst"
 
-  # only if sphinx-apidoc actually created it
   if [[ -f "$mod_rst" ]]; then
     funcs=$(grep -Po '^def \K\w+' "$module_py" || true)
     if [[ -n "$funcs" ]]; then
@@ -113,11 +112,12 @@ Functions
 
 EOF
       for f in $funcs; do
-        echo "   ${mod}.${f}" >> "$mod_rst"
+        # link to our stub by its full "spac.module.func" name
+        echo "   spac.${mod}.${f}" >> "$mod_rst"
 
-        # create a stub file with an explicit heading (no parentheses)
-        stub="$DOC_DIR/modules/${mod}.${f}.rst"
-        underline="$(printf '%*s' "${#f}" '' | tr ' ' '-')"
+        # create the stub file under that same name
+        stub="$DOC_DIR/modules/spac.${mod}.${f}.rst"
+        underline=$(printf '%*s' "${#f}" '' | tr ' ' '-')
         cat > "$stub" <<EOF
 ${f}
 ${underline}
@@ -128,6 +128,48 @@ EOF
     fi
   fi
 done
+
+# ─── 5b) Embed all modules+functions directly in spac.html ───────────────
+PACKAGE_RST="$DOC_DIR/spac.rst"
+echo "Rewriting $PACKAGE_RST to include every module inline…"
+cat > "$PACKAGE_RST" <<EOF
+spac package
+============
+
+Version: $version  
+Author: $authors
+
+Submodules & Functions
+=======================
+
+.. automodule:: spac.data_utils
+   :members:
+   :undoc-members:
+
+.. automodule:: spac.phenotyping
+   :members:
+   :undoc-members:
+
+.. automodule:: spac.spatial_analysis
+   :members:
+   :undoc-members:
+
+.. automodule:: spac.transformations
+   :members:
+   :undoc-members:
+
+.. automodule:: spac.utag_functions
+   :members:
+   :undoc-members:
+
+.. automodule:: spac.utils
+   :members:
+   :undoc-members:
+
+.. automodule:: spac.visualization
+   :members:
+   :undoc-members:
+EOF
 
 # ─── 6) Build an index of sub-modules ───────────────────────────────────
 cat > $DOC_DIR/modules/index.rst <<EOF
